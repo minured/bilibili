@@ -10,11 +10,12 @@
 
 <script>
 export default {
-    methods: {
-        btnClick() {
-            this.$emit("btnClick")
-        }
-    }
+  methods: {
+    btnClick() {
+      console.log("click");
+      this.$emit("btnClick");
+    },
+  },
 };
 </script>
 
