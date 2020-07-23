@@ -9,7 +9,7 @@
         class="part1-left"
       />
       <img
-        src="@/assets/img/userAvatar2.jpg"
+        src="@/assets/img/default_img.jpg"
         alt=""
         class="part1-left"
         v-else

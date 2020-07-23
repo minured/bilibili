@@ -1,6 +1,6 @@
 <template>
   <!-- 动态添加类，key是类名，value是判断点 -->
-  <div class="edit-item" :class="{ border: hasBorder }">
+  <div class="edit-item" :class="{ border: hasBorder }" @click="$emit('itemClick')">
     <div class="left">{{ label }}</div>
     <div class="right">
       {{ rightText }}
@@ -21,7 +21,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2.6vw 3.2vw;
+  padding: 2.7vw 3.2vw;
   color: #505050;
   font-size: 4vw;
   &.border {

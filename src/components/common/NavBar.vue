@@ -9,7 +9,7 @@
     </div>
     <div class="right">
       <img :src="userImg" alt="" v-if="userImg"/>
-      <img src="@/assets/img/userAvatar.jpg" alt="" v-else/>
+      <img src="@/assets/img/default_img.jpg" alt="" v-else/>
       <span>下载 App</span>
     </div>
   </div>
