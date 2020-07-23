@@ -4,17 +4,26 @@
       <NavBar :userImg="model.user_img" />
     </div>
     <div class="video-wrapper">
-      <van-tabs v-model="active" swipeable sticky animated> 
+      <van-tabs v-model="active" swipeable animated swipe-threshold="5" sticky>
         <van-tab v-for="(item, i) in category" :title="item.title" :key="i">
-          <div class="video-item-wrapper">
-            <video-item
-              v-for="(video, i) in item.content"
-              :videoInfo="video"
-              :key="i"
-              class="video-item"
-              @videoClick='onVideoClick'
-            ></video-item>
-          </div>
+          <van-list
+            v-model="item.loading"
+            :finished="item.finished"
+            finished-text="没有更多了"
+            @load="loadMore"
+            :immediate-check="false"
+            offset="50"
+          >
+            <div class="video-item-wrapper">
+              <video-item
+                v-for="(video, index) in item.content"
+                :videoInfo="video"
+                :key="index"
+                class="video-item"
+                @videoClick="onVideoClick"
+              ></video-item>
+            </div>
+          </van-list>
         </van-tab>
       </van-tabs>
     </div>
@@ -32,14 +41,24 @@ export default {
   data() {
     return {
       model: {},
-      category: undefined,
+      category: [],
       active: 0,
-      content: "",
     };
   },
   methods: {
+    loadMore() {
+      console.log("loading");
+      const targetItem = this.category[this.active];
+      setTimeout(() => {
+        targetItem.page += 1;
+        this.getContent();
+        console.log(targetItem.loading)
+        targetItem.loading = false
+      }, 1000);
+    },
     async getUserInfo() {
       const res = await this.$http.get("/user/" + localStorage.getItem("id"));
+      console.log(res);
       this.model = res.data[0];
       //   console.log(res);
     },
@@ -48,8 +67,12 @@ export default {
       this.category = res.data;
       //   记录获取数量和起始
       this.category.map((item) => {
-        item.page = 0;
-        item.pagesize = 10;
+        this.$set(item, "content", []);
+        this.$set(item, "page", 0);
+        this.$set(item, "pagesize", 10);
+        this.$set(item, "loading", false);
+        this.$set(item, "finished", false);
+        
       });
       console.log(this.category);
       //   获取首页内容
@@ -66,11 +89,15 @@ export default {
         },
       });
       //   新属性添加响应
-      this.$set(targetItem, "content", res.data);
+      //   this.$set(targetItem, "content", res.data);
+      targetItem.content.push(...res.data); //可以复用
+      if (res.data.length < targetItem.pagesize) {
+        targetItem.finished = true;
+      }
     },
     onVideoClick() {
-        console.log('click')
-    }
+      console.log("click");
+    },
   },
   mounted() {
     this.getUserInfo();
@@ -85,18 +112,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.item-status {
+  position: fixed;
+  border: 1px solid red;
+  left: 0;
+  top: 0;
+  z-index: 8;
+}
 .page {
-    background: white;
+  background: white;
 }
 .navbar-wrapper {
-  margin-bottom: 2.778vw;
 }
 .video-wrapper {
-    
   .video-item-wrapper {
-      margin-top: 0.833vw;
-      display: flex;
-      flex-wrap: wrap;
+    margin-top: 0.833vw;
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 </style>

@@ -7,6 +7,8 @@ import Vant from 'vant'
 import "vant/lib/index.css"
 import http from '../http.js'
 
+
+
 Vue.prototype.$http = http
 Vue.use(Vant)
 Vue.config.productionTip = false

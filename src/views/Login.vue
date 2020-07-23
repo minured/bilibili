@@ -45,13 +45,17 @@ export default {
     async onRegisterSubmit() {
       if (this.model.username && this.model.password) {
         const res = await this.$http.post("/login", this.model);
-        // console.log(res);
-        this.$toast.success(res.data.msg);
-        localStorage.setItem("id", res.data.id);
-        localStorage.setItem("token", res.data.token);
-        setTimeout(() => {
-          this.$router.push("/userinfo");
-        }, 1000);
+        console.log(res);
+        if (res.data.code === 200) {
+          this.$toast.success(res.data.msg);
+          localStorage.setItem("id", res.data.id);
+          localStorage.setItem("token", res.data.token);
+          setTimeout(() => {
+            this.$router.push("/userinfo");
+          }, 1000);
+        } else {
+          this.$toast.fail(res.data.msg);
+        }
       } else {
         this.$toast.fail("格式错误,请重新输入");
       }

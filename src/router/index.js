@@ -5,14 +5,18 @@ import Login from "@/views/Login"
 import UserInfo from "@/views/UserInfo"
 import Edit from '@/views/Edit'
 import Home from '@/views/Home'
+import home2 from '@/views/home2'
 
 Vue.use(VueRouter)
 
   const routes = [
     {
       path:'/',
-      component: Home,
-      isToken: true    
+      component: Home,   
+    },
+    {
+      path: "/home2",
+      component: home2
     },
   {
     path: '/register',

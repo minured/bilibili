@@ -1,15 +1,18 @@
 <template>
   <div class="navbar">
     <div class="left">
-      <img src="@/assets/logo.png" alt=""/>
+      <img src="@/assets/logo.png" alt="" @click="$router.push('/')"/>
     </div>
     <div class="middle">
       <van-icon name="search" color="#999" size="4.444vw" />
       <span>刀剑神域</span>
     </div>
     <div class="right">
-      <img :src="userImg" alt="" v-if="userImg"/>
-      <img src="@/assets/img/default_img.jpg" alt="" v-else/>
+      <div @click="$router.push('/userinfo')">
+        <img :src="userImg" alt="" v-if="userImg" />
+        <img src="@/assets/img/default_img.jpg" alt="" v-else />
+      </div>
+
       <span>下载 App</span>
     </div>
   </div>
@@ -17,7 +20,7 @@
 
 <script>
 export default {
-  props:['userImg']
+  props: ["userImg"],
 };
 </script>
 
