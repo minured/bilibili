@@ -47,20 +47,16 @@ export default {
   },
   methods: {
     loadMore() {
-      console.log("loading");
       const targetItem = this.category[this.active];
       setTimeout(() => {
         targetItem.page += 1;
         this.getContent();
-        console.log(targetItem.loading)
         targetItem.loading = false
       }, 1000);
     },
     async getUserInfo() {
       const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      console.log(res);
       this.model = res.data[0];
-      //   console.log(res);
     },
     async getCategory() {
       const res = await this.$http.get("/category");
@@ -74,7 +70,6 @@ export default {
         this.$set(item, "finished", false);
         
       });
-      console.log(this.category);
       //   获取首页内容
       this.getContent();
     },
@@ -95,8 +90,8 @@ export default {
         targetItem.finished = true;
       }
     },
-    onVideoClick() {
-      console.log("click");
+    onVideoClick(videoId) {
+      this.$router.push('/videoDetail/' + videoId)
     },
   },
   mounted() {
@@ -106,6 +101,7 @@ export default {
   watch: {
     active() {
       this.getContent();
+
     },
   },
 };

@@ -5,7 +5,7 @@ import Login from "@/views/Login"
 import UserInfo from "@/views/UserInfo"
 import Edit from '@/views/Edit'
 import Home from '@/views/Home'
-import home2 from '@/views/home2'
+import VideoDetail from "@/views/VideoDetail"
 
 Vue.use(VueRouter)
 
@@ -13,10 +13,10 @@ Vue.use(VueRouter)
     {
       path:'/',
       component: Home,   
-    },
-    {
-      path: "/home2",
-      component: home2
+      // 可以在meta里面添加每个路由得判断条件，用于守卫时判断
+      meta: {
+        keepAlive:true
+      }
     },
   {
     path: '/register',
@@ -39,6 +39,10 @@ Vue.use(VueRouter)
     meta: {
       isToken: true
     }
+  },
+  {
+    path: '/videoDetail/:id',
+    component: VideoDetail
   }
 ]
 

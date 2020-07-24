@@ -1,5 +1,5 @@
 <template>
-  <div class="video-item" @click="$emit('videoClick')">
+  <div class="video-item" @click="$emit('videoClick', videoInfo.id)">
     <div class="img-wrapper">
       <img :src="videoInfo.img" alt="" />
       <div class="video-bottom clearfix">
