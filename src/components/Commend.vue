@@ -15,8 +15,8 @@
       <van-tab :title="`评论 ${comment_count}`">
         <div class="commend-wrapper">
           <div class="user-input">
-            <img :src="userInfo.user_img" alt="" v-if="userInfo" />
-            <img src="@/assets/img/login.png" alt="" v-else />
+            <img :src="userInfo.user_img" alt="" v-if="userInfo.user_img" />
+            <img src="@/assets/img/default_img.jpg" alt="" v-else />
             <input
               type="text"
               placeholder="发个友善的评论"

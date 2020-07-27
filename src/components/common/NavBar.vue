@@ -9,8 +9,24 @@
     </div>
     <div class="right">
       <div>
-        <img :src="userInfo.user_img" alt="" v-if="userInfo" @click="onUserImgClick"/>
-        <img src="@/assets/img/login.png" alt="" v-else @click="$router.push('/login')"/>
+        <img
+          :src="userInfo.user_img"
+          alt=""
+          v-if="userInfo && userInfo.user_img"
+          @click="onUserImgClick"
+        />
+        <img
+          src="@/assets/img/default_img.jpg"
+          alt=""
+          v-else-if="userInfo"
+          @click="onUserImgClick"
+        />
+        <img
+          src="@/assets/img/login.png"
+          alt=""
+          v-else
+          @click="$router.push('/login')"
+        />
       </div>
 
       <span>下载 App</span>

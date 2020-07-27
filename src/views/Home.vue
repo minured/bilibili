@@ -1,5 +1,5 @@
 <template>
-  <div class="page" v-if="category"> 
+  <div class="page" v-if="category">
     <div class="navbar-wrapper">
       <NavBar :userInfo="model" />
     </div>
@@ -48,8 +48,13 @@ export default {
       active: 0,
     };
   },
-  activated(){
-    this.getCategory()
+  // keep-alive时，更新数据
+  activated() {
+    this.getCategory();
+    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+      this.getUserInfo();
+    }
+    this.getCategory();
   },
   methods: {
     loadMore() {
@@ -89,7 +94,9 @@ export default {
 
     async getContent() {
       const targetItem = this.category[this.active];
-      if (!targetItem) {return}
+      if (!targetItem) {
+        return;
+      }
       const res = await this.$http.get("/detail/" + targetItem._id, {
         params: {
           page: targetItem.page,
