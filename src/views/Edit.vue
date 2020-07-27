@@ -32,7 +32,7 @@
         label="性别"
         has-border="true"
         @itemClick="onGenderClick"
-        :rightText="model.gender === 1 ? '男' : '女'"
+        :rightText="model.gender === '1' ? '男' : '女'"
       />
       <editItem label="个性签名" @itemClick="onDescClick" />
     </div>
@@ -152,7 +152,7 @@ export default {
     onGenderSelect(item) {
       console.log("select");
       console.log(item);
-      this.model.gender = item.id;
+      this.model.gender = item.id.toString();
       this.updateInfo();
     },
     onLogout() {

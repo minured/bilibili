@@ -147,12 +147,11 @@ export default {
   }
   .edit-category {
     // border: 1px solid red;
-    width: 40px;
+    width: 35px;
     height: 43px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-right: 10px;
     background: white;
     position: absolute;
     z-index: 1;

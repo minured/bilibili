@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="navbar-wrapper">
-      <NavBar :userInfo="userInfo"/>
+      <NavBar :userInfo="userInfo" />
     </div>
     <div class="edit-category">
       <p class="title">自定义首页栏目</p>
       <van-divider>现有栏目</van-divider>
       <!-- TODO 事件委托 -->
-      <div class="selected-list">
+      <div class="selected-list category-list">
         <span
           v-for="(item, i) in category"
           :key="i"
@@ -16,7 +16,7 @@
         >
       </div>
       <van-divider>未选择栏目</van-divider>
-      <div class="remove-list">
+      <div class="remove-list category-list">
         <span
           v-for="(item, i) in removedList"
           :key="i"
@@ -36,7 +36,7 @@ export default {
     return {
       category: [],
       removedList: [],
-      userInfo: null
+      userInfo: null,
     };
   },
   components: {
@@ -48,10 +48,10 @@ export default {
       this.category.push(...removed);
     },
     selectedItemClick(index) {
-        if (this.category.length < 2) {
-            this.$toast.fail("请至少保留一个栏目")
-            return
-        }
+      if (this.category.length < 2) {
+        this.$toast.fail("请至少保留一个栏目");
+        return;
+      }
       const removed = this.category.splice(index, 1);
       this.removedList.push(...removed);
     },
@@ -102,32 +102,30 @@ export default {
   .title {
     color: #666;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
   }
-  .selected-list {
+  .category-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    
     span {
-      border: 1px solid blue;
-      margin-right: 10px;
-      padding: 2px 10px;
-      line-height: 25px;
+        // box-sizing: border-box;
+      width: 20%;
       text-align: center;
-      margin-bottom: 5px;
+      margin: 1.389vw 1.944vw;
+      padding: 1.944vw 0vw;
+    }
+  }
+  .selected-list {
+    span {
+      color: #1a73e8;
+      border: 0.278vw solid #1a73e8;
     }
   }
   .remove-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
     span {
-      border: 1px solid red;
-      margin-right: 10px;
-      padding: 2px 10px;
-      line-height: 25px;
-      text-align: center;
-      margin-bottom: 5px;
+      color: #ee0a24;
+      border: 0.278vw solid #ee0a24;
     }
   }
 }

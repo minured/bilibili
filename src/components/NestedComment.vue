@@ -18,7 +18,7 @@
             </div>
             <div class="info-right">
               <span class="reply" @click="sendCommentID(item.comment_id)"
-                >回复{{ item.comment_id }}</span
+                >回复</span
               >
               <!-- TODO 点赞 -->
               <!-- <svg class="icon" aria-hidden="true">
