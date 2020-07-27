@@ -85,8 +85,9 @@ export default {
         return;
       }
       // 正则校验 TODO
-      if (!/^.{6,50}$/.test(this.commendContent)) {
+      if (!/^.{2,50}$/.test(this.commendContent)) {
         console.log("校验失败");
+        this.$toast.fail('至少两个字')
         return;
       }
 
