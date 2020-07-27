@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let list = [
+        { id: 1, name: "部门A", parentId: 0 },
+        { id: 2, name: "部门B", parentId: 0 },
+        { id: 3, name: "部门C", parentId: 1 },
+        { id: 4, name: "部门D", parentId: 1 },
+        { id: 5, name: "部门E", parentId: 2 },
+        { id: 6, name: "部门F", parentId: 3 },
+        { id: 7, name: "部门G", parentId: 2 },
+        { id: 8, name: "部门H", parentId: 4 },
+      ];
+
+  
+      //   递归
+      function fn(id) {
+        let treeList = []
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].parentId === id) {
+                treeList.push(list[i])
+                list[i].children = fn(list[i].id)
+            }
+        }
+        return treeList
+      }
+      const res = fn(0);
+      console.log(res)
+
+      //   // 1. 找出顶级节点
+      //   list.forEach((item) => {
+      //       if (item.parentId === 0) {
+      //           tree.push({
+      //               ...item,
+      //               children: []
+      //           })
+      //       }
+      //   })
+      //   console.log(tree)
+      //   console.log("")
+
+      //   // 2. 循环顶级节点，根据其 id 找出 相同的 parent_id
+      //   tree.forEach(item => {
+      //       list.forEach(child => {
+      //           if (item.id === child.parentId) {
+      //               item.children.push(child)
+      //           }
+      //       })
+      //   })
+      //   console.log(tree)
+    </script>
+  </body>
+</html>

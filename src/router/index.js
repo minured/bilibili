@@ -6,6 +6,7 @@ import UserInfo from "@/views/UserInfo"
 import Edit from '@/views/Edit'
 import Home from '@/views/Home'
 import VideoDetail from "@/views/VideoDetail"
+import EditCategory from "@/views/EditCategory"
 
 Vue.use(VueRouter)
 
@@ -43,13 +44,17 @@ Vue.use(VueRouter)
   {
     path: '/videoDetail/:id',
     component: VideoDetail
+  },
+  {
+    path: '/editcategory',
+    component: EditCategory
   }
 ]
 
 
 
 const router = new VueRouter({
-  mode: "history",
+  // mode: "history",
   routes
 })
 
@@ -59,7 +64,7 @@ router.beforeEach((to, from , next) => {
   // 首先是要判断isToken， 然后 id 和 token 都没有的 就要重新登陆
   if (to.meta.isToken && !localStorage.getItem('id') && !localStorage.getItem('token')) {
     router.push('/login')
-    Vue.prototype.$toast.fail("请重新登录")
+    Vue.prototype.$toast.fail("请先登录")
     return 
   }
   next()

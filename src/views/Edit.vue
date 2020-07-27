@@ -1,7 +1,7 @@
 <template>
   <div v-if="model" class="page-wrapper">
     <div class="navbar-wrapper">
-      <NavBar :userImg="model.user_img" />
+      <NavBar :userInfo="model" />
     </div>
     <div class="edit-list">
       <div class="user-img">

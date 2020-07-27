@@ -1,9 +1,9 @@
 <template>
   <div class="page">
     <div class="navbar-wrapper">
-      <nav-bar />
+      <nav-bar :userInfo="userInfo" />
     </div>
-    <div class="video-wrapper"  v-if="videoData">
+    <div class="video-wrapper" v-if="videoData">
       <div class="video-player">
         <video :src="videoData.content" controls></video>
       </div>
@@ -33,35 +33,54 @@
             </div>
           </van-collapse-item>
           <div class="video-operation">
-            <div class="zan" @click="zanSelected=!zanSelected">
-              <svg class="icon" aria-hidden="true" v-if="zanSelected"><use xlink:href="#icon-zan-selected"></use></svg>
-              <svg class="icon" aria-hidden="true" v-else><use xlink:href="#icon-zan"></use></svg>
-              点赞
+            <div class="operation-left">
+              <div class="zan" @click="zanSelected = !zanSelected">
+                <svg class="icon" aria-hidden="true" v-if="zanSelected">
+                  <use xlink:href="#icon-zan-selected"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-zan"></use>
+                </svg>
+                点赞
+              </div>
+              <div class="collection" @click="onCollectionClick">
+                <svg class="icon" aria-hidden="true" v-if="collectionSelected">
+                  <use xlink:href="#icon-collection-selected"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-collection"></use>
+                </svg>
+                收藏
+              </div>
+              <div class="download" @click="download">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-huancun"></use>
+                </svg>
+                缓存
+              </div>
             </div>
-            <div class="collection" @click="collectionSelected=!collectionSelected">
-              <svg class="icon" aria-hidden="true" v-if="collectionSelected"><use xlink:href="#icon-collection-selected"></use></svg>
-              <svg class="icon" aria-hidden="true" v-else><use xlink:href="#icon-collection"></use></svg>
-              收藏
-            </div>
-            <div class="download" @click="download">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-huancun"></use>
-              </svg>
-              缓存
+            <div class="operation-right" @click="follow">
+              <div v-if="!isFollowed">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-add"></use>
+                </svg>
+                关注
+              </div>
+              <div v-else class="is-followed">已关注</div>
             </div>
           </div>
         </div>
       </van-collapse>
     </div>
     <div class="commnd-wrapper">
-        <commend/>
+      <commend :commendData="commendData" :userInfo="userInfo" />
     </div>
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/common/NavBar";
-import Commend from "@/components/Commend"
+import Commend from "@/components/Commend";
 export default {
   data() {
     return {
@@ -70,39 +89,129 @@ export default {
       titleWrap: true,
       zanSelected: false,
       collectionSelected: false,
-      commendData: undefined
+      commendData: undefined,
+      userInfo: null,
+      isFollowed: false,
     };
   },
   components: {
     NavBar,
-    Commend
+    Commend,
   },
   methods: {
+    isLogin() {
+      if (!this.userInfo) {
+        this.$toast.fail("请先登录");
+        return false;
+      }
+      return true;
+    },
+
+    async initFollow() {
+      console.log(this.videoData);
+      const res = await this.$http.get(
+        "/sub_scription/" + localStorage.getItem("id"),
+        {
+          params: {
+            // 使用了data，要注意时机
+            sub_id: this.videoData.userid,
+          },
+        }
+      );
+      console.log(res);
+      if (res.data.success === false) {
+        this.isFollowed = false;
+      } else if (res.data.success === true) {
+        this.isFollowed = true;
+      }
+    },
+    async follow() {
+      if (!this.isLogin()) {
+        return;
+      }
+      this.isFollowed = !this.isFollowed;
+      const res = await this.$http.post(
+        "/sub_scription/" + localStorage.getItem("id"),
+        {
+          sub_id: this.videoData.userid,
+        }
+      );
+      console.log(res);
+      if (res.data.msg === "关注成功") {
+        this.isFollowed = true;
+      } else if (res.data.msg === "取消关注成功") {
+        this.isFollowed = false;
+      }
+    },
+    async initCollection() {
+      const res = await this.$http.get(
+        "/collection/" + localStorage.getItem("id"),
+        {
+          params: {
+            article_id: this.$route.params.id,
+          },
+        }
+      );
+      if (res.data.success === false) {
+        this.collectionSelected = false;
+      } else if (res.data.success === true) {
+        this.collectionSelected = true;
+      }
+    },
+    async onCollectionClick() {
+      if (!this.isLogin()) {
+        return;
+      }
+      const res = await this.$http.post(
+        "/collection/" + localStorage.getItem("id"),
+        { article_id: this.$route.params.id }
+      );
+      if (res.data.msg === "收藏成功") {
+        this.collectionSelected = true;
+      } else if (res.data.msg === "取消收藏成功") {
+        this.collectionSelected = false;
+      }
+    },
+    async getUserInfo() {
+      const res = await this.$http.get("/user/" + localStorage.getItem("id"));
+      this.userInfo = res.data[0];
+    },
     async getVideoData() {
       const res = await this.$http.get("/article/" + this.$route.params.id);
       this.videoData = res.data[0];
+      this.initFollow();
     },
     onChange() {
       this.titleWrap = !this.titleWrap;
     },
-    download(){
-        window.open(this.videoData.content)
+    download() {
+      window.open(this.videoData.content);
     },
-    async getRecommend(){
-        const res = await this.$http.get('/commend')
-        this.commendData = res.data
-        console.log(this.commendData)
-    }
+    async getRecommend() {
+      const res = await this.$http.get("/commend");
+      this.commendData = res.data;
+    },
   },
   created() {
     this.getVideoData();
-    this.getRecommend()
-
+    this.getRecommend();
+    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+      this.getUserInfo();
+      this.initCollection();
+    }
+  },
+  watch: {
+    $route() {
+      this.getVideoData();
+      this.getRecommend();
+      this.initCollection();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/style.css";
 .page {
   background: white;
 }
@@ -185,16 +294,35 @@ export default {
     padding: 2.778vw 4.444vw;
     font-size: 3.5vw;
     display: flex;
-    width: 60vw;
     justify-content: space-between;
-    .icon {
-      width: 20px;
-    //   border: 1px solid red;
-      height: 20px;
-      vertical-align: middle;
-      margin-top: -5px;
-      color: red;
+    .operation-left {
+      // border: 1px solid red;
+      display: flex;
+      width: 60vw;
+      justify-content: space-between;
+      .icon {
+        width: 20px;
+        //   border: 1px solid red;
+        height: 20px;
+        vertical-align: middle;
+        margin-top: -5px;
+        color: red;
+      }
+    }
+    .operation-right {
+      // border: 1px solid red;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
+      color: #fb7299;
+      .icon {
+        margin-top: 1px;
+        margin-right: 1px;
+      }
+      .is-followed {
+        color: #999;
+      }
     }
   }
 }

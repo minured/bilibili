@@ -1,10 +1,13 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="category"> 
     <div class="navbar-wrapper">
-      <NavBar :userImg="model.user_img" />
+      <NavBar :userInfo="model" />
     </div>
     <div class="video-wrapper">
-      <van-tabs v-model="active" swipeable animated swipe-threshold="5" sticky>
+      <div class="edit-category" @click="editCategory">
+        <van-icon name="setting-o" size="5vw" color="#666" />
+      </div>
+      <van-tabs v-model="active" swipeable animated swipe-threshold="4" sticky>
         <van-tab v-for="(item, i) in category" :title="item.title" :key="i">
           <van-list
             v-model="item.loading"
@@ -40,10 +43,13 @@ export default {
   },
   data() {
     return {
-      model: {},
+      model: null,
       category: [],
       active: 0,
     };
+  },
+  activated(){
+    this.getCategory()
   },
   methods: {
     loadMore() {
@@ -51,7 +57,7 @@ export default {
       setTimeout(() => {
         targetItem.page += 1;
         this.getContent();
-        targetItem.loading = false
+        targetItem.loading = false;
       }, 1000);
     },
     async getUserInfo() {
@@ -59,8 +65,16 @@ export default {
       this.model = res.data[0];
     },
     async getCategory() {
-      const res = await this.$http.get("/category");
-      this.category = res.data;
+      // 先获取本地数据
+      if (localStorage.getItem("category")) {
+        let localCategory = JSON.parse(localStorage.getItem("category"));
+        console.log(localCategory);
+        this.category = localCategory;
+      } else {
+        const res = await this.$http.get("/category");
+        this.category = res.data;
+      }
+
       //   记录获取数量和起始
       this.category.map((item) => {
         this.$set(item, "content", []);
@@ -68,7 +82,6 @@ export default {
         this.$set(item, "pagesize", 10);
         this.$set(item, "loading", false);
         this.$set(item, "finished", false);
-        
       });
       //   获取首页内容
       this.getContent();
@@ -76,7 +89,7 @@ export default {
 
     async getContent() {
       const targetItem = this.category[this.active];
-
+      if (!targetItem) {return}
       const res = await this.$http.get("/detail/" + targetItem._id, {
         params: {
           page: targetItem.page,
@@ -85,23 +98,28 @@ export default {
       });
       //   新属性添加响应
       //   this.$set(targetItem, "content", res.data);
+      console.log(targetItem);
       targetItem.content.push(...res.data); //可以复用
       if (res.data.length < targetItem.pagesize) {
         targetItem.finished = true;
       }
     },
     onVideoClick(videoId) {
-      this.$router.push('/videoDetail/' + videoId)
+      this.$router.push("/videoDetail/" + videoId);
+    },
+    editCategory() {
+      this.$router.push("/editcategory");
     },
   },
   mounted() {
-    this.getUserInfo();
+    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+      this.getUserInfo();
+    }
     this.getCategory();
   },
   watch: {
     active() {
       this.getContent();
-
     },
   },
 };
@@ -121,10 +139,25 @@ export default {
 .navbar-wrapper {
 }
 .video-wrapper {
+  position: relative;
   .video-item-wrapper {
     margin-top: 0.833vw;
     display: flex;
     flex-wrap: wrap;
+  }
+  .edit-category {
+    // border: 1px solid red;
+    width: 40px;
+    height: 43px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+    background: white;
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 0;
   }
 }
 </style>

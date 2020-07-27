@@ -1,6 +1,6 @@
 <template>
   <div class="userinfo">
-    <NavBar :userImg="model.user_img" />
+    <NavBar :userInfo="model" />
     <div class="banner"></div>
     <UserDetail :user-data="model" />
   </div>

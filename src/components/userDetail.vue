@@ -36,7 +36,12 @@
     </div>
 
     <div class="detail-part2">
-      <p class="name">{{ userData.name }}</p>
+      <p class="name">
+        {{ userData.name }}
+        <svg class="icon" aria-hidden="true">
+          <use :xlink:href="userData.gender === '0' ? '#icon-female' : '#icon-male'"></use>
+        </svg>
+      </p>
       <p class="line2">
         <span class="introduction" v-if="userData.user_desc">{{
           userData.user_desc
@@ -65,6 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/style.css";
 .user-detail {
   background: white;
   padding: 3.333vw;
@@ -127,9 +133,6 @@ export default {
     .name {
       margin-bottom: 1.389vw;
       font-size: 4.8vw;
-      &::after {
-        content: "\e622";
-      }
     }
     p.line2 {
       margin: 0;
