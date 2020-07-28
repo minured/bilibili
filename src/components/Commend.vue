@@ -15,7 +15,7 @@
       <van-tab :title="`评论 ${comment_count}`">
         <div class="commend-wrapper">
           <div class="user-input">
-            <img :src="userInfo.user_img" alt="" v-if="userInfo.user_img" />
+            <img :src="userInfo.user_img" alt="" v-if="userInfo && userInfo.user_img" />
             <img src="@/assets/img/default_img.jpg" alt="" v-else />
             <input
               type="text"
@@ -131,37 +131,37 @@ export default {
   flex-wrap: wrap;
 }
 .commend-wrapper {
-  margin-top: 15px;
-  padding: 0 15px 10px 15px;
+  margin-top: 4.167vw;
+  padding: 0 4.167vw 2.778vw 4.167vw;
   .user-input {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 14px;
     img {
-      width: 30px;
-      height: 30px;
+      width: 8.333vw;
+      height: 8.333vw;
       border-radius: 50%;
       vertical-align: middle;
-      margin-right: 10px;
+      margin-right: 2.778vw;
     }
     input {
       flex: 1;
       border: none;
       outline: none;
-      line-height: 26px;
-      border-radius: 15px;
-      padding: 1px 10px;
+      line-height: 7.222vw;
+      border-radius: 4.167vw;
+      padding: 0.278vw 2.778vw;
       background: #f4f4f4;
       box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
-      margin-right: 10px;
+      margin-right: 2.778vw;
     }
     span {
       background: #fb7299;
-      line-height: 26px;
-      padding: 2px 10px 0 10px;
-      height: 26px;
-      border-radius: 13px;
+      line-height: 7.222vw;
+      padding: 0.556vw 2.778vw 0 2.778vw;
+      height: 7.222vw;
+      border-radius: 3.611vw;
       color: white;
     }
   }

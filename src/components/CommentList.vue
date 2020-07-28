@@ -87,8 +87,8 @@ export default {
 .comment-item {
   //   border: 1px solid red;
   border-bottom: 1px solid #e7e7e7;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  padding-bottom: 2.778vw;
+  padding-top: 2.778vw;
 }
 .comment-lv1 {
   display: flex;
@@ -101,8 +101,8 @@ export default {
       height: 30px;
       border-radius: 50%;
       vertical-align: middle;
-      margin-right: 10px;
-      padding-top: 2px;
+      margin-right: 2.778vw;
+      padding-top: 0.556vw;
     }
   }
   .right {
@@ -130,13 +130,13 @@ export default {
         display: flex;
         align-items: center;
         .icon {
-          width: 14px;
-          height: 14px;
+          width: 3.889vw;
+          height: 3.889vw;
           margin-right: 2px;
           margin-top: -2px;
         }
         .reply {
-          font-size: 12px;
+          font-size: 3.333vw;
           color: #5090cc;
         }
       }
@@ -156,10 +156,10 @@ export default {
   }
 }
 .nested-comment {
-  margin: 10px 0 10px 40px;
-  padding: 0 5px;
+  margin: 2.778vw 0 2.778vw 11.111vw;
+  padding: 0 1.389vw;
   // border: 1px solid red;
   background: #f4f4f4;
-  border-radius: 4px;
+  border-radius: 1.111vw;
 }
 </style>

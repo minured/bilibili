@@ -94,15 +94,15 @@ export default {
 
 <style lang="scss" scoped>
 .navbar-wrapper {
-  margin-bottom: 10px;
+  margin-bottom: 2.778vw;
 }
 .edit-category {
-  padding: 5px 10px;
+  padding: 1.389vw 2.778vw;
   background: white;
   .title {
     color: #666;
     text-align: center;
-    font-size: 16px;
+    font-size: 4.444vw;
   }
   .category-list {
     display: flex;

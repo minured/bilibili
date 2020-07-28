@@ -65,8 +65,8 @@ export default {
 }
 .current-level {
   display: flex;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  padding-bottom: 2.778vw;
+  padding-top: 2.778vw;
   width: 100%;
   .left {
     img {
@@ -74,8 +74,8 @@ export default {
       height: 30px;
       border-radius: 50%;
       vertical-align: middle;
-      margin-right: 10px;
-      padding-top: 2px;
+      margin-right: 2.778vw;
+      padding-top: 0.556vw;
     }
   }
   .right {
@@ -103,13 +103,13 @@ export default {
         display: flex;
         align-items: center;
         .icon {
-          width: 14px;
-          height: 14px;
-          margin-right: 2px;
-          margin-top: -2px;
+          width: 3.889vw;
+          height: 3.889vw;
+          margin-right: 0.556vw;
+          margin-top: -0.556vw;
         }
         .reply {
-          font-size: 12px;
+          font-size: 3.333vw;
           color: #5090cc;
         }
       }

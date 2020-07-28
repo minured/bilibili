@@ -154,7 +154,7 @@ export default {
   }
   .edit-category {
     // border: 1px solid red;
-    width: 35px;
+    width: 9.722vw;
     height: 43px;
     display: flex;
     justify-content: center;
