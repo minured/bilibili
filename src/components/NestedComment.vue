@@ -4,7 +4,6 @@
       <div class="current-level">
         <div class="left">
 
-          
           <!-- 嵌套评论隐藏头像 -->
           <!-- <img
             :src="item.userinfo.user_img"
