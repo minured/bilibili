@@ -3,6 +3,8 @@
     <div class="comment-item" v-for="(item, i) in commentChildren" :key="i">
       <div class="current-level">
         <div class="left">
+
+          
           <!-- 嵌套评论隐藏头像 -->
           <!-- <img
             :src="item.userinfo.user_img"
