@@ -1,25 +1,29 @@
 <template>
-  <div>
+  <div class="page">
     <div class="comment-item" v-for="(item, i) in commentChildren" :key="i">
       <div class="current-level">
         <div class="left">
-          <img
+          <!-- 嵌套评论隐藏头像 -->
+          <!-- <img
             :src="item.userinfo.user_img"
             alt=""
             v-if="item.userinfo && item.userinfo.user_img"
           />
-          <img src="@/assets/img/default_img.jpg" alt="" v-else />
+          <img src="@/assets/img/default_img.jpg" alt="" v-else /> -->
         </div>
+        <!-- 模仿b站客户端， 名字后面直接跟上 评论 -->
         <div class="right">
           <div class="comment-info">
             <div class="info-left">
+              <!-- 嵌套评论用户信息 -->
               <p class="user-name">{{ item.userinfo.name || "无名氏" }}</p>
-              <p class="date">{{ item.comment_date || "no time" }}</p>
+              <!-- <p class="date">{{ item.comment_date || "no time" }}</p> -->
             </div>
             <div class="info-right">
-              <span class="reply" @click="sendCommentID(item.comment_id)"
+              <!-- 隐藏回复按钮，点击评论直接回复 -->
+              <!-- <span class="reply" @click="sendCommentID(item.comment_id)"
                 >回复</span
-              >
+              > -->
               <!-- TODO 点赞 -->
               <!-- <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-zan2"></use>
@@ -27,14 +31,19 @@
               <span>2378</span> -->
             </div>
           </div>
-          <div class="comment-content" v-if="isLevel3">
+          
+
+          <!-- 如果是三级评论，则加上 回复 XX： -->
+          <span class="comment-content" v-if="isLevel3">
             回复
             <span style="color: #5090cc">{{ item.parent_user_info.name }}</span>
             ：{{ item.comment_content }}
-          </div>
-          <div class="comment-content" v-else>
+          </span>
+          <span class="comment-content" v-else>
             {{ item.comment_content }}
-          </div>
+          </span>
+
+
         </div>
       </div>
       <div class="nested-comment">
@@ -61,6 +70,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page {
+  // border: 1px solid red;
+}
 .comment-item {
 }
 .current-level {
@@ -69,6 +81,7 @@ export default {
   padding-top: 2.778vw;
   width: 100%;
   .left {
+    // border:1px solid red;
     img {
       width: 30px;
       height: 30px;
@@ -86,8 +99,9 @@ export default {
       .info-left {
         flex: 1;
         .user-name {
+          
           font-size: 3.46667vw;
-          color: #757575;
+          color: #5090cc;
         }
         .date {
           margin-top: 1.2vw;
