@@ -7,18 +7,19 @@ import Edit from '@/views/Edit'
 import Home from '@/views/Home'
 import VideoDetail from "@/views/VideoDetail"
 import EditCategory from "@/views/EditCategory"
+import Search from "@/views/Search"
 
 Vue.use(VueRouter)
 
-  const routes = [
-    {
-      path:'/',
-      component: Home,   
-      // 可以在meta里面添加每个路由得判断条件，用于守卫时判断
-      meta: {
-        keepAlive:true
-      }
-    },
+const routes = [
+  {
+    path:'/',
+    component: Home,   
+    // 可以在meta里面添加每个路由得判断条件，用于守卫时判断
+    meta: {
+      keepAlive:true
+    }
+  },
   {
     path: '/register',
     component: register
@@ -48,6 +49,10 @@ Vue.use(VueRouter)
   {
     path: '/editcategory',
     component: EditCategory
+  },
+  {
+    path: "/search",
+    component: Search
   }
 ]
 

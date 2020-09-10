@@ -1,54 +1,33 @@
 <template>
   <div class="page">
     <div class="comment-item" v-for="(item, i) in commentChildren" :key="i">
-      <div class="current-level">
-        <div class="left">
-
-          <!-- 嵌套评论隐藏头像 -->
-          <!-- <img
-            :src="item.userinfo.user_img"
-            alt=""
-            v-if="item.userinfo && item.userinfo.user_img"
-          />
-          <img src="@/assets/img/default_img.jpg" alt="" v-else /> -->
-        </div>
-        <!-- 模仿b站客户端， 名字后面直接跟上 评论 -->
-        <div class="right">
+      <div class="current-level" @click="sendCommentID(item.comment_id)">
+        <div class="comment">
+          <!-- 评论用户名-->
           <div class="comment-info">
-            <div class="info-left">
-              <!-- 嵌套评论用户信息 -->
-              <p class="user-name">{{ item.userinfo.name || "无名氏" }}</p>
-              <!-- <p class="date">{{ item.comment_date || "no time" }}</p> -->
-            </div>
-            <div class="info-right">
-              <!-- 隐藏回复按钮，点击评论直接回复 -->
-              <!-- <span class="reply" @click="sendCommentID(item.comment_id)"
-                >回复</span
-              > -->
-              <!-- TODO 点赞 -->
-              <!-- <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-zan2"></use>
-              </svg>
-              <span>2378</span> -->
-            </div>
+            <span class="user-name">{{ item.userinfo.name || "无名氏" }}</span>
+            <span style="font-size:3.46667vw;color: #212121">：</span>
           </div>
-          
 
-          <!-- 如果是三级评论，则加上 回复 XX： -->
-          <span class="comment-content" v-if="isLevel3">
+          <!-- 评论内容：两种情况，如果是三级评论，则加上 回复 XX： -->
+          <!-- 情况一：三级评论 -->
+          <div class="comment-content" v-if="isLevel3">
             回复
             <span style="color: #5090cc">{{ item.parent_user_info.name }}</span>
-            ：{{ item.comment_content }}
-          </span>
-          <span class="comment-content" v-else>
+            <span style="font-size:3.46667vw">：</span>
             {{ item.comment_content }}
-          </span>
+          </div>
 
-
+          <!-- 情况二： 二级评论 -->
+          <div class="comment-content" v-else>{{ item.comment_content }}</div>
         </div>
       </div>
       <div class="nested-comment">
-        <nestedComment :commentChildren="item.children" :isLevel3="true" @sendCommentID="sendCommentID"/>
+        <nestedComment
+          :commentChildren="item.children"
+          :isLevel3="true"
+          @sendCommentID="sendCommentID"
+        />
       </div>
     </div>
   </div>
@@ -60,82 +39,49 @@ export default {
   props: ["commentChildren", "isLevel3"],
   methods: {
     // 递归组件 层层向上发送事件
+    // 评论id的传递路径： nestedComment => CommentList => Commend(在此发送)
     sendCommentID(id) {
       this.$emit("sendCommentID", id); //被每层的本递归组件 接收
     },
     continueSendID(id) {
-      this.sendCommentID(id)
+      this.sendCommentID(id);
     },
+
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .page {
-  // border: 1px solid red;
+  
 }
 .comment-item {
 }
 .current-level {
+  // border: 1px solid red;
   display: flex;
   padding-bottom: 2.778vw;
   padding-top: 2.778vw;
   width: 100%;
-  .left {
-    // border:1px solid red;
-    img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      vertical-align: middle;
-      margin-right: 2.778vw;
-      padding-top: 0.556vw;
-    }
-  }
-  .right {
-    flex: 1;
-    .comment-info {
-      display: flex;
-      justify-content: space-between;
-      .info-left {
-        flex: 1;
-        .user-name {
-          
-          font-size: 3.46667vw;
-          color: #5090cc;
-        }
-        .date {
-          margin-top: 1.2vw;
-          font-size: 3.2vw;
-          height: 3.2vw;
-          line-height: 3.2vw;
-          color: #999;
-        }
-      }
-      .info-right {
-        font-size: 2.8vw;
-        color: #999;
-        display: flex;
-        align-items: center;
-        .icon {
-          width: 3.889vw;
-          height: 3.889vw;
-          margin-right: 0.556vw;
-          margin-top: -0.556vw;
-        }
-        .reply {
-          font-size: 3.333vw;
-          color: #5090cc;
-        }
-      }
-    }
-    p {
-      margin: 0;
-      padding: 0;
-    }
 
+  // 嵌套评论
+  .comment {
+    
+    flex: 1;
+    // border: 1px solid red;
+    display: flex;
+    align-items: center;
+
+    .comment-info {
+      // border: 1px solid red;
+      .user-name {
+        font-size: 3.46667vw;
+        color: #5090cc;
+      }
+    }
+  
     .comment-content {
-      margin-top: 2.4vw;
+      // border: 1px solid red;
       font-size: 3.46667vw;
       color: #212121;
       white-space: pre-line;

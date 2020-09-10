@@ -18,25 +18,65 @@
               </p>
               <p class="date">{{ item.comment_date || "no time" }}</p>
             </div>
-            <div class="info-right" @click="zanSelected = !zanSelected">
-              <span class="reply" @click="$emit('replyClick', item.comment_id)">回复</span>
-              <!-- 点赞先不做 -->
-              <!-- <svg class="icon" aria-hidden="true" v-if="zanSelected">
-                <use xlink:href="#icon-zan2"></use>
-              </svg>
-              <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-zan2-selected-copy"></use>
-              </svg>
-              <span>2378</span> -->
+            <div class="info-right">
+              <span class="reply" @click="$emit('replyClick', item.comment_id)"
+                >回复</span
+              >
             </div>
           </div>
           <div class="comment-content">
             {{ item.comment_content }}
           </div>
+          <div class="comment-operation">
+            
+            <!-- 点赞 -->
+            <div @click="onZanSelected" class="comment-zan">
+              <svg class="icon" aria-hidden="true" v-if="!zanSelected">
+                <use xlink:href="#icon-zan2"></use>
+              </svg>
+              <svg class="icon" aria-hidden="true" v-else>
+                <use xlink:href="#icon-zan2-selected-copy"></use>
+              </svg>
+              <span>{{ zanNum }}</span>
+            </div>
+
+            <!-- 踩 -->
+            <div class="comment-cai" @click="caiSelected=!caiSelected">
+              <svg class="icon" aria-hidden="true" v-if="!caiSelected">
+                <use xlink:href="#icon-cai"></use>
+              </svg>
+              <svg class="icon" aria-hidden="true" v-else>
+                <use xlink:href="#icon-cai-selected"></use>
+              </svg>
+            </div>
+
+            <!-- 转发 -->
+            <div class="comment-forward" @click="forward=!forward">
+              <svg class="icon" aria-hidden="true" v-if="!forward">
+                <use xlink:href="#icon-forward"></use>
+              </svg>
+              <svg class="icon" aria-hidden="true" v-else>
+                <use xlink:href="#icon-forward-selected"></use>
+              </svg>
+            </div>
+
+            <!-- 气泡 -->
+            <div class="comment-qipao" @click="qipaoSelected=!qipaoSelected">
+              <svg class="icon" aria-hidden="true" v-if="!qipaoSelected">
+                <use xlink:href="#icon-qipao"></use>
+              </svg>
+              <svg class="icon" aria-hidden="true" v-else>
+                <use xlink:href="#icon-qipao-selected"></use>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
       <div class="nested-comment">
-        <nested-comment :comment-children="item.children" @sendCommentID="$emit('replyClick', $event)"/>
+        <nested-comment
+          :comment-children="item.children"
+          @sendCommentID="onSendCommendID"
+        />
       </div>
     </div>
   </div>
@@ -49,7 +89,12 @@ export default {
   data() {
     return {
       commentList: null,
-      zanSelected: true,
+      zanSelected: false,
+      zanNum: 2356,
+      caiSelected: false,
+      forward: false,
+      qipaoSelected: false
+
     };
   },
   components: {
@@ -57,6 +102,13 @@ export default {
   },
 
   methods: {
+    onZanSelected() {
+      this.zanSelected = !this.zanSelected;
+      this.zanSelected ? this.zanNum++ : this.zanNum--;
+    },
+    onSendCommendID(comment_id) {
+      this.$emit("replyClick", comment_id);
+    },
     async getCommentData() {
       const res = await this.$http.get("/comment/" + this.$route.params.id);
       this.commentList = this.changeToTree(res.data);
@@ -113,7 +165,7 @@ export default {
       .info-left {
         //   border: 1px solid red;
         .user-name {
-          font-size: 3.46667vw;
+          font-size: 3.467vw;
           color: #757575;
         }
         .date {
@@ -152,6 +204,25 @@ export default {
       color: #212121;
       white-space: pre-line;
       word-break: break-word;
+      margin-bottom: 2.222vw;
+    }
+    .comment-operation {
+      font-size: 3.4667vw;
+      // border: 1px solid red;
+      display: flex;
+      div {
+        margin-right: 4.167vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      div.comment-zan {
+        span {
+          margin-top: 0.556vw;
+          margin-left: 0.556vw;
+          color: #8a8a8a;
+        }
+      }
     }
   }
 }
@@ -159,6 +230,8 @@ export default {
   margin: 2.778vw 0 2.778vw 11.111vw;
   padding: 0 1.389vw;
   // border: 1px solid red;
+  max-height: 200px;
+  overflow: auto;
   background: #f4f4f4;
   border-radius: 1.111vw;
 }

@@ -3,7 +3,7 @@
     <div class="left">
       <img src="@/assets/logo.png" alt="" @click="$router.push('/')" />
     </div>
-    <div class="middle">
+    <div class="middle" @click="$router.push('/search')">
       <van-icon name="search" color="#999" size="4.444vw" />
       <span>刀剑神域</span>
     </div>

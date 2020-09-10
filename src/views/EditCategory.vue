@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div class="navbar-wrapper">
       <NavBar :userInfo="userInfo" />
     </div>
@@ -25,6 +25,7 @@
         >
       </div>
     </div>
+    <div class="back-btn" @click="onBackClick">返回</div>
   </div>
 </template>
 
@@ -43,6 +44,10 @@ export default {
     NavBar,
   },
   methods: {
+    onBackClick(){
+      console.log("back");
+      this.$router.back()
+    },
     removedItemClick(index) {
       const removed = this.removedList.splice(index, 1);
       this.category.push(...removed);
@@ -93,6 +98,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page {
+  // border: 1px solid red;
+  height: 100vh;
+}
 .navbar-wrapper {
   margin-bottom: 2.778vw;
 }
@@ -107,9 +116,9 @@ export default {
   .category-list {
     display: flex;
     flex-wrap: wrap;
-    
+
     span {
-        // box-sizing: border-box;
+      // box-sizing: border-box;
       width: 20%;
       text-align: center;
       margin: 1.389vw 1.944vw;
@@ -128,5 +137,20 @@ export default {
       border: 0.278vw solid #ee0a24;
     }
   }
+}
+.back-btn {
+  
+  border: 0.278vw solid rgb(251, 114, 153);
+  box-shadow: 0 0 0.833vw rgba(0, 0, 0, 0.1);
+  margin: 0vw 5.556vw;
+  padding: 2.778vw 27.778vw;
+  border-radius: 1.389vw;
+  display: flex;
+  line-height: 5.556vw;
+  height: 5.556vw;
+  position: relative;
+  top: 27.778vw;
+  bottom: 0;
+  justify-content: center;
 }
 </style>
