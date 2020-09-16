@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/style.css";
+@import "../assets/style.scss";
 .user-detail {
   background: white;
   padding: 3.333vw;

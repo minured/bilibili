@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-tabs v-model="active" sticky>
+    <van-tabs v-model="active" sticky animated swipeable :color="biliColor">
       <van-tab title="相关推荐">
         <div class="video-item-wrapper">
           <video-item
@@ -56,6 +56,7 @@ export default {
         parent_id: null,
         article_id: "",
       },
+      biliColor: "#fb7299"
     };
   },
   components: {

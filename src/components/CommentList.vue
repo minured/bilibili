@@ -28,7 +28,6 @@
             {{ item.comment_content }}
           </div>
           <div class="comment-operation">
-            
             <!-- 点赞 -->
             <div @click="onZanSelected" class="comment-zan">
               <svg class="icon" aria-hidden="true" v-if="!zanSelected">
@@ -37,11 +36,11 @@
               <svg class="icon" aria-hidden="true" v-else>
                 <use xlink:href="#icon-zan2-selected-copy"></use>
               </svg>
-              <span>{{ zanNum }}</span>
+              <span :class="{'selected-color': zanSelected}">{{ zanNum }}</span>
             </div>
 
             <!-- 踩 -->
-            <div class="comment-cai" @click="caiSelected=!caiSelected">
+            <div class="comment-cai" @click="caiSelected = !caiSelected">
               <svg class="icon" aria-hidden="true" v-if="!caiSelected">
                 <use xlink:href="#icon-cai"></use>
               </svg>
@@ -51,7 +50,7 @@
             </div>
 
             <!-- 转发 -->
-            <div class="comment-forward" @click="forward=!forward">
+            <div class="comment-forward" @click="forward = !forward">
               <svg class="icon" aria-hidden="true" v-if="!forward">
                 <use xlink:href="#icon-forward"></use>
               </svg>
@@ -61,7 +60,7 @@
             </div>
 
             <!-- 气泡 -->
-            <div class="comment-qipao" @click="qipaoSelected=!qipaoSelected">
+            <div class="comment-qipao" @click="qipaoSelected = !qipaoSelected">
               <svg class="icon" aria-hidden="true" v-if="!qipaoSelected">
                 <use xlink:href="#icon-qipao"></use>
               </svg>
@@ -93,8 +92,7 @@ export default {
       zanNum: 2356,
       caiSelected: false,
       forward: false,
-      qipaoSelected: false
-
+      qipaoSelected: false,
     };
   },
   components: {
@@ -136,6 +134,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style.scss";
+
+.selected-color {
+  color: $bili-color !important;
+}
 .comment-item {
   //   border: 1px solid red;
   border-bottom: 1px solid #e7e7e7;

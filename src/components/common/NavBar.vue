@@ -49,6 +49,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style.scss";
+
 .navbar {
   display: flex;
   flex-direction: row;
@@ -101,7 +103,8 @@ export default {
       vertical-align: middle;
     }
     span {
-      background: #fb7299;
+      // background: #fb7299;
+      background: $bili-color;
       color: white;
       font-size: 3.333vw;
       line-height: 6.4vw;

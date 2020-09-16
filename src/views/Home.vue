@@ -7,7 +7,7 @@
       <div class="edit-category" @click="editCategory">
         <van-icon name="setting-o" size="5vw" color="#666" />
       </div>
-      <van-tabs v-model="active" swipeable animated swipe-threshold="4" sticky>
+      <van-tabs v-model="active" swipeable animated swipe-threshold="4" sticky :color="biliColor">
         <van-tab v-for="(item, i) in category" :title="item.title" :key="i">
           <van-list
             v-model="item.loading"
@@ -46,6 +46,7 @@ export default {
       model: null,
       category: [],
       active: 0,
+      biliColor: "#fb7299"
     };
   },
   // keep-alive时，更新数据
