@@ -211,7 +211,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/style.scss";
+@import "../assets/iconStyle.scss";
 .page {
   background: white;
 }

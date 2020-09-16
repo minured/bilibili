@@ -134,7 +134,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/style.scss";
+@import "@/assets/iconStyle.scss";
 
 .selected-color {
   color: $bili-color !important;

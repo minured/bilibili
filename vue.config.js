@@ -3,4 +3,13 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'production'
     ? '/bilibili/'
     : '/',
+
+    // 全局样式,全局变量
+    css: {
+        loaderOptions: {
+          sass: {
+            additionalData: `@import "@/assets/baseStyle.scss";`
+          }
+        }
+      }
 }
