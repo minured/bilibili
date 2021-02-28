@@ -15,7 +15,7 @@ import VueRouter from 'vue-router'
 const Register  = () => import('@/views/register')
 const Login  = () => import('@/views/Login')
 const UserInfo  = () => import('@/views/UserInfo')
-const Edit  = () => import('@/views/Edit')
+const Edit  = () => import('@/views/EditUserInfo')
 const Home  = () => import('@/views/Home')
 const VideoDetail  = () => import('@/views/VideoDetail')
 const EditCategory  = () => import('@/views/EditCategory')

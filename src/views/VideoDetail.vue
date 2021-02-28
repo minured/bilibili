@@ -1,9 +1,10 @@
 <template>
   <div class="page">
     <div class="navbar-wrapper">
-      <nav-bar :userInfo="userInfo" />
+      <NavBar :userInfo="userInfo" />
     </div>
     <div class="video-wrapper" v-if="videoData">
+      <VideoPlay />
       <div class="video-player">
         <video :src="videoData.content" controls></video>
       </div>
@@ -79,7 +80,8 @@
 </template>
 
 <script>
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/NavBar";
+import VideoPlay from "@/components/VideoDetail/VideoPlay";
 import Commend from "@/components/Commend";
 export default {
   data() {
@@ -96,6 +98,7 @@ export default {
   },
   components: {
     NavBar,
+    VideoPlay,
     Commend,
   },
   methods: {
@@ -132,6 +135,7 @@ export default {
       this.isFollowed = !this.isFollowed;
       const res = await this.$http.post(
         "/sub_scription/" + localStorage.getItem("id"),
+
         {
           sub_id: this.videoData.userid,
         }

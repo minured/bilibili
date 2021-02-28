@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import LoginTop from "@/components/common/LoginTop";
-import LoginText from "@/components/common/LoginText";
-import LoginBtn from "@/components/common/LoginBtn";
+import LoginTop from "@/components/login/LoginTop";
+import LoginText from "@/components/login/LoginText";
+import LoginBtn from "@/components/login/LoginBtn";
 
 export default {
   components: {

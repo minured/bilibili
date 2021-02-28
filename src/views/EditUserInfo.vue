@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/NavBar";
 import EditItem from "@/components/editItem";
 import EditBtn from "@/components/EditBtn";
 

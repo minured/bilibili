@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/NavBar";
 
 export default {
   data() {

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/NavBar";
 import VideoItem from "@/components/VideoItem";
 export default {
   components: {
@@ -49,7 +49,7 @@ export default {
       biliColor: "#fb7299"
     };
   },
-  // keep-alive时，更新数据
+  // 钩子函数，keep-alive时，更新数据
   activated() {
     this.getCategory();
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
