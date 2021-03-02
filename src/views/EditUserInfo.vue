@@ -81,8 +81,8 @@
 
 <script>
 import NavBar from "@/components/NavBar";
-import EditItem from "@/components/editItem";
-import EditBtn from "@/components/EditBtn";
+import EditItem from "@/components/EditUserInfo/editItem";
+import EditBtn from "@/components/EditUserInfo/EditBtn";
 
 export default {
   components: {

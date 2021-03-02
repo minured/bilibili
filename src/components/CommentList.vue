@@ -36,7 +36,9 @@
               <svg class="icon" aria-hidden="true" v-else>
                 <use xlink:href="#icon-zan2-selected-copy"></use>
               </svg>
-              <span :class="{'selected-color': zanSelected}">{{ zanNum }}</span>
+              <span :class="{ 'selected-color': zanSelected }">{{
+                zanNum
+              }}</span>
             </div>
 
             <!-- 踩 -->
@@ -140,7 +142,7 @@ export default {
   color: $bili-color !important;
 }
 .comment-item {
-  //   border: 1px solid red;
+  background: rgba($color: #000000, $alpha: 0.1);
   border-bottom: 1px solid #e7e7e7;
   padding-bottom: 2.778vw;
   padding-top: 2.778vw;
