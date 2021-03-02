@@ -1,7 +1,9 @@
 <template>
   <div v-if="commentList">
     <div class="comment-item" v-for="(item, index) in commentList" :key="index">
+      <!-- 一级评论 -->
       <div class="comment-lv1">
+        <!-- 左边头像 -->
         <div class="left">
           <img
             :src="item.userinfo.user_img"
@@ -10,6 +12,7 @@
           />
           <img src="@/assets/img/default_img.jpg" alt="" v-else />
         </div>
+        <!-- 右边整块，包括名字和内容 -->
         <div class="right">
           <div class="comment-info">
             <div class="info-left">
@@ -18,11 +21,8 @@
               </p>
               <p class="date">{{ item.comment_date || "no time" }}</p>
             </div>
-            <div class="info-right">
-              <span class="reply" @click="$emit('replyClick', item.comment_id)"
-                >回复</span
-              >
-            </div>
+
+            <div class="info-right"></div>
           </div>
           <div class="comment-content">
             {{ item.comment_content }}
@@ -62,12 +62,12 @@
             </div>
 
             <!-- 气泡 -->
-            <div class="comment-qipao" @click="qipaoSelected = !qipaoSelected">
-              <svg class="icon" aria-hidden="true" v-if="!qipaoSelected">
+            <div
+              class="comment-qipao"
+              @click="$emit('replyClick', item.comment_id)"
+            >
+              <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-qipao"></use>
-              </svg>
-              <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-qipao-selected"></use>
               </svg>
             </div>
           </div>
@@ -94,7 +94,6 @@ export default {
       zanNum: 2356,
       caiSelected: false,
       forward: false,
-      qipaoSelected: false,
     };
   },
   components: {
@@ -142,17 +141,17 @@ export default {
   color: $bili-color !important;
 }
 .comment-item {
-  background: rgba($color: #000000, $alpha: 0.1);
+  // background: rgba($color: #000000, $alpha: 0.1);
   border-bottom: 1px solid #e7e7e7;
   padding-bottom: 2.778vw;
   padding-top: 2.778vw;
 }
 .comment-lv1 {
+  // background: rgba($color: #000000, $alpha: 0.1);
   display: flex;
   justify-content: flex-start;
 
   .left {
-    //   border:1px solid red;
     img {
       width: 30px;
       height: 30px;
@@ -162,11 +161,15 @@ export default {
       padding-top: 0.556vw;
     }
   }
+
   .right {
     flex: 1;
     .comment-info {
+      background: rgba($color: #000000, $alpha: 0.1);
       display: flex;
       justify-content: space-between;
+
+      // 名字和日期
       .info-left {
         //   border: 1px solid red;
         .user-name {
@@ -181,6 +184,7 @@ export default {
           color: #999;
         }
       }
+      // 回复按钮
       .info-right {
         font-size: 2.8vw;
         color: #999;
@@ -202,7 +206,7 @@ export default {
       margin: 0;
       padding: 0;
     }
-
+    // 评论内容
     .comment-content {
       margin-top: 2.4vw;
       font-size: 3.46667vw;
@@ -211,6 +215,7 @@ export default {
       word-break: break-word;
       margin-bottom: 2.222vw;
     }
+    // 点赞收藏转发
     .comment-operation {
       font-size: 3.4667vw;
       // border: 1px solid red;
@@ -231,6 +236,7 @@ export default {
     }
   }
 }
+// 次级评论
 .nested-comment {
   margin: 2.778vw 0 2.778vw 11.111vw;
   padding: 0 1.389vw;

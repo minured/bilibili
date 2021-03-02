@@ -1,6 +1,33 @@
 <template>
   <div>
-    <van-tabs v-model="active" sticky animated swipeable :color="biliColor">
+    <!-- 发表评论, 弹出 -->
+    <div class="publish-comment" :class="{ textareaShow: textareaShow }">
+      <div class="inner">
+        <div class="user-input">
+          <!-- 头像 -->
+          <img
+            :src="userInfo.user_img"
+            alt=""
+            v-if="userInfo && userInfo.user_img"
+          />
+          <img src="@/assets/img/default_img.jpg" alt="" v-else />
+          <!-- 输入框 -->
+          <textarea
+            type="text"
+            placeholder="发条友善的评论"
+            @focus="onInputFocus"
+            v-model="commendContent"
+            ref="inputEl"
+            @blur="onInputBlur"
+            rows="1"
+          />
+          <!-- 发表按钮 -->
+          <span :class="{ onInput: isInput }">发表</span>
+        </div>
+      </div>
+    </div>
+
+    <van-tabs v-model="active" sticky swipeable :color="biliColor">
       <!-- 推荐 -->
       <van-tab title="相关推荐">
         <div class="video-item-wrapper">
@@ -16,32 +43,6 @@
 
       <!-- 评论 -->
       <van-tab :title="`评论 ${comment_count}`">
-        <!-- 发表评论 -->
-        <div class="commend-head">
-          <div class="user-input">
-            <!-- 头像 -->
-            <img
-              :src="userInfo.user_img"
-              alt=""
-              v-if="userInfo && userInfo.user_img"
-            />
-            <img src="@/assets/img/default_img.jpg" alt="" v-else />
-            <!-- 输入框 -->
-            <textarea
-              type="text"
-              placeholder="发个友善的评论"
-              @focus="onInputFocus"
-              v-model="commendContent"
-              ref="inputEl"
-              @blur="onInputBlur"
-              rows="1"
-            />
-            <!-- 发表按钮 -->
-            <span :class="{ onInput: isInput }">发表</span>
-          </div>
-        </div>
-
-        <!-- 评论内容 -->
         <div class="comment-content">
           <!-- 顶级回复和二级回复的 clcik 事件 -->
           <comment-list
@@ -62,6 +63,7 @@ import dayjs from "dayjs";
 export default {
   data() {
     return {
+      textareaShow: false,
       active: 1,
       commendContent: "",
       comment_count: 0,
@@ -145,6 +147,19 @@ export default {
       this.$refs.inputEl.rows = 1;
     },
   },
+  watch: {
+    active: {
+      immediate: true,
+      handler() {
+        console.log("active");
+        if (this.active === 1) {
+          this.textareaShow = true;
+        } else {
+          this.textareaShow = false;
+        }
+      },
+    },
+  },
 };
 </script>
 
@@ -155,47 +170,63 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-// 评论
-.commend-head {
-  margin-top: 4.167vw;
-  padding: 0 4.167vw 2.778vw 4.167vw;
-  .user-input {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    img {
-      width: 8.333vw;
-      height: 8.333vw;
-      border-radius: 50%;
-      vertical-align: middle;
-      margin-right: 2.778vw;
-    }
-    textarea {
-      resize: none;
-      flex: 1;
-      border: none;
-      outline: none;
-      line-height: 7.222vw;
-      border-radius: 4.167vw;
-      padding: 0.278vw 2.778vw;
-      background: #f4f4f4;
-      box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
-      margin-right: 2.778vw;
-    }
+.publish-comment {
+  background: rgba(255, 255, 255, 1);
+  border-top: 0.5px solid rgba(0, 0, 0, 0.15);
+  width: 100%;
+  display: none;
+  left: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 10;
+  padding: 1.067vw 1.333vw;
+  display: none;
+  &.textareaShow {
+    display: block;
+  }
+  div.inner {
+    padding: 0 1.333vw;
+    .user-input {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      img {
+        width: 8.333vw;
+        height: 8.333vw;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 15px;
+      }
+      textarea {
+        resize: none;
+        flex: 1;
+        border: none;
+        outline: none;
+        line-height: 7.222vw;
+        border-radius: 4.167vw;
+        padding: 0.278vw 2.778vw;
+        background: #f4f4f4;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+        margin: 0 15px 0 0px;
+      }
 
-    span {
-      display: none;
-      color: $bili-color;
-      // TODO 实现切换动画
-      &.onInput {
-        display: inline;
+      span {
+        display: none;
+        color: $bili-color;
+        // TODO 实现切换动画
+        &.onInput {
+          display: inline;
+        }
       }
     }
   }
 }
+
 .comment-content {
   margin-top: 4.167vw;
   padding: 0 4.167vw 2.778vw 4.167vw;
+  // border: 1px solid red;
+  margin-bottom: 29px;
 }
 </style>
