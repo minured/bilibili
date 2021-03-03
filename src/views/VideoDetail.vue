@@ -45,7 +45,7 @@
           @clickZan="onClickZan"
           :caiSelected="commentCai"
           @clickCai="onClickCai"
-          @clickForward="onClcikForward"
+          @clickForward="onClickForward"
           @clickReply="onClickReply"
           :zanNum="commentZanNum"
         />
@@ -55,6 +55,14 @@
         <NestedComment :commentChildren="getCommentChildren()" />
       </div>
     </van-popup>
+
+    <!-- 分享面板 -->
+    <van-share-sheet
+      v-model="showShare"
+      title="立即分享给好友"
+      :options="options"
+      @select="onShareSelect"
+    />
   </div>
 </template>
 
@@ -69,10 +77,22 @@ import CommentItem from "@/components/CommentItem";
 export default {
   data() {
     return {
+      // 分享面板
+      showShare: false,
+      options: [
+        { name: "微信", icon: "wechat" },
+        { name: "微博", icon: "weibo" },
+        { name: "复制链接", icon: "link" },
+        { name: "分享海报", icon: "poster" },
+        { name: "二维码", icon: "qrcode" },
+      ],
+
+      // 评论弹出层
       commentZan: false,
       commentCai: false,
       commentZanNum: 2233,
       showAllChildren: false,
+
       videoData: null,
       activeNames: [],
       titleWrap: true,
@@ -93,14 +113,19 @@ export default {
     CommentItem,
   },
   methods: {
+    onShareSelect(option) {
+      this.$toast(option.name);
+      this.showShare = false;
+    },
     onClickZan() {
       console.log("click zan");
     },
     onClickCai() {
       console.log("click cai");
     },
-    onClcikForward() {
+    onClickForward() {
       console.log("click forward");
+      this.showShare = true;
     },
     onClickReply() {
       console.log("click reply");

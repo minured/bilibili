@@ -19,6 +19,7 @@ import {
   CollapseItem,
   Popup,
   Cell,
+  ShareSheet,
 } from "vant";
 
 Vue.prototype.$http = http;
@@ -35,7 +36,8 @@ Vue.use(Tab)
   .use(Collapse)
   .use(CollapseItem)
   .use(Popup)
-  .use(Cell);
+  .use(Cell)
+  .use(ShareSheet);
 
 Vue.config.productionTip = false;
 
