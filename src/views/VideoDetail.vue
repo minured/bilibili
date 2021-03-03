@@ -3,6 +3,7 @@
     <div class="navbar-wrapper">
       <NavBar :userInfo="userInfo" />
     </div>
+    <button @click="pop">弹出</button>
     <div class="video-wrapper" v-if="videoData">
       <VideoPlay :videoData="videoData" />
       <VideoTitle :videoData="videoData" @onChange="onChange" />
@@ -19,6 +20,25 @@
 
     <!-- 推荐和评论 -->
     <Others :commendData="commendData" :userInfo="userInfo" />
+    <van-popup
+      v-model="showAllChildren"
+      lock-scroll
+      position="bottom"
+      lazy-render
+      :close-on-popstate="true"
+      :closeable="true"
+      :overlay-style="{ background: 'rgba(0, 0, 0, 0)' }"
+    >
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+      <p>wdadwd</p>
+    </van-popup>
   </div>
 </template>
 
@@ -31,6 +51,7 @@ import Others from "@/components/VideoDetail/Others";
 export default {
   data() {
     return {
+      showAllChildren: false,
       videoData: null,
       activeNames: [],
       titleWrap: true,
@@ -49,6 +70,9 @@ export default {
     Others,
   },
   methods: {
+    pop() {
+      this.showAllChildren = true;
+    },
     isLogin() {
       if (!this.userInfo) {
         this.$toast.fail("请先登录");

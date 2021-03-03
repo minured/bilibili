@@ -7,7 +7,14 @@
       <div class="edit-category" @click="editCategory">
         <van-icon name="setting-o" size="5vw" color="#666" />
       </div>
-      <van-tabs v-model="active" swipeable animated swipe-threshold="4" sticky :color="biliColor">
+      <van-tabs
+        v-model="active"
+        swipeable
+        animated
+        swipe-threshold="4"
+        sticky
+        :color="biliColor"
+      >
         <van-tab v-for="(item, i) in category" :title="item.title" :key="i">
           <van-list
             v-model="item.loading"
@@ -46,7 +53,7 @@ export default {
       model: null,
       category: [],
       active: 0,
-      biliColor: "#fb7299"
+      biliColor: "#fb7299",
     };
   },
   // 钩子函数，keep-alive时，更新数据
@@ -64,6 +71,7 @@ export default {
         targetItem.page += 1;
         this.getContent();
         targetItem.loading = false;
+        // 加载两遍是因为没有finished=true
       }, 1000);
     },
     async getUserInfo() {

@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <van-tabs v-model="active" sticky swipeable :color="biliColor">
+    <van-tabs v-model="active" sticky animated swipeable :color="biliColor">
       <!-- 推荐 -->
       <van-tab title="相关推荐">
         <div class="video-item-wrapper">

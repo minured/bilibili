@@ -1,95 +1,131 @@
 <template>
   <div v-if="commentList">
-    <div class="comment-item" v-for="(item, index) in commentList" :key="index">
-      <!-- 一级评论 -->
-      <div class="comment-lv1">
-        <!-- 左边头像 -->
-        <div class="left">
-          <img
-            :src="item.userinfo.user_img"
-            alt=""
-            v-if="item.userinfo && item.userinfo.user_img"
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="loadMore"
+    >
+      <div
+        v-for="(item, index) in currentList"
+        :key="index"
+        :title="item"
+        class="comment-item"
+      >
+        <!-- 一级评论 -->
+        <div class="comment-lv1">
+          <!-- 左边头像 -->
+          <div class="left">
+            <img
+              :src="item.userinfo.user_img"
+              alt=""
+              v-if="item.userinfo && item.userinfo.user_img"
+            />
+            <img src="@/assets/img/default_img.jpg" alt="" v-else />
+          </div>
+          <!-- 右边整块，包括名字和内容 -->
+          <div class="right">
+            <div class="comment-info">
+              <div class="info-left">
+                <p class="user-name" v-if="item.userinfo">
+                  {{ item.userinfo.name || "无名氏" }}
+                </p>
+                <p class="date">{{ item.comment_date || "no time" }}</p>
+              </div>
+
+              <div class="info-right"></div>
+            </div>
+            <div class="comment-content">
+              {{ item.comment_content }}
+            </div>
+            <div class="comment-operation">
+              <!-- 点赞 -->
+              <div @click="onZanSelected" class="comment-zan">
+                <svg class="icon" aria-hidden="true" v-if="!zanSelected">
+                  <use xlink:href="#icon-zan2"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-zan2-selected-copy"></use>
+                </svg>
+                <span :class="{ 'selected-color': zanSelected }">{{
+                  zanNum
+                }}</span>
+              </div>
+
+              <!-- 踩 -->
+              <div class="comment-cai" @click="caiSelected = !caiSelected">
+                <svg class="icon" aria-hidden="true" v-if="!caiSelected">
+                  <use xlink:href="#icon-cai"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-cai-selected"></use>
+                </svg>
+              </div>
+
+              <!-- 转发 -->
+              <div class="comment-forward" @click="forward = !forward">
+                <svg class="icon" aria-hidden="true" v-if="!forward">
+                  <use xlink:href="#icon-forward"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-else>
+                  <use xlink:href="#icon-forward-selected"></use>
+                </svg>
+              </div>
+
+              <!-- 气泡 -->
+              <div
+                class="comment-qipao"
+                @click="$emit('replyClick', item.comment_id)"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-qipao"></use>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 二级评论 -->
+        <!-- <div class="nested-comment">
+          <nested-comment
+            :comment-children="item.children.slice(0, 3)"
+            @sendCommentID="onSendCommendID"
           />
-          <img src="@/assets/img/default_img.jpg" alt="" v-else />
-        </div>
-        <!-- 右边整块，包括名字和内容 -->
-        <div class="right">
-          <div class="comment-info">
-            <div class="info-left">
-              <p class="user-name" v-if="item.userinfo">
-                {{ item.userinfo.name || "无名氏" }}
-              </p>
-              <p class="date">{{ item.comment_date || "no time" }}</p>
-            </div>
+        </div> -->
 
-            <div class="info-right"></div>
-          </div>
-          <div class="comment-content">
-            {{ item.comment_content }}
-          </div>
-          <div class="comment-operation">
-            <!-- 点赞 -->
-            <div @click="onZanSelected" class="comment-zan">
-              <svg class="icon" aria-hidden="true" v-if="!zanSelected">
-                <use xlink:href="#icon-zan2"></use>
-              </svg>
-              <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-zan2-selected-copy"></use>
-              </svg>
-              <span :class="{ 'selected-color': zanSelected }">{{
-                zanNum
-              }}</span>
-            </div>
-
-            <!-- 踩 -->
-            <div class="comment-cai" @click="caiSelected = !caiSelected">
-              <svg class="icon" aria-hidden="true" v-if="!caiSelected">
-                <use xlink:href="#icon-cai"></use>
-              </svg>
-              <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-cai-selected"></use>
-              </svg>
-            </div>
-
-            <!-- 转发 -->
-            <div class="comment-forward" @click="forward = !forward">
-              <svg class="icon" aria-hidden="true" v-if="!forward">
-                <use xlink:href="#icon-forward"></use>
-              </svg>
-              <svg class="icon" aria-hidden="true" v-else>
-                <use xlink:href="#icon-forward-selected"></use>
-              </svg>
-            </div>
-
-            <!-- 气泡 -->
-            <div
-              class="comment-qipao"
-              @click="$emit('replyClick', item.comment_id)"
-            >
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-qipao"></use>
-              </svg>
-            </div>
-          </div>
+        <!-- 当前仅显示三条二级评论 -->
+        <div class="three-children">
+          <ThreeChildren
+            :comment-children="item.children"
+            @popAllChildren="onPopAllChildren"
+            :showAllChildren="showAllChildren"
+          />
         </div>
       </div>
-      <div class="nested-comment">
-        <nested-comment
-          :comment-children="item.children"
-          @sendCommentID="onSendCommendID"
-        />
-      </div>
-    </div>
+    </van-list>
+    
   </div>
 </template>
 
 <script>
-import NestedComment from "@/components/NestedComment.vue";
+// import NestedComment from "@/components/NestedComment.vue";
+import ThreeChildren from "@/components/ThreeChildren";
 
 export default {
   data() {
     return {
+      // vant_list的参数
+      loading: false,
+      finished: false,
+
+      // 当前显示评论
+      currentList: null,
+      // 全部评论
       commentList: null,
+      currentPage: 10,
+
+      showAllChildren: true,
+
       zanSelected: false,
       zanNum: 2356,
       caiSelected: false,
@@ -97,10 +133,28 @@ export default {
     };
   },
   components: {
-    NestedComment,
+    // NestedComment,
+    ThreeChildren,
   },
 
   methods: {
+    onPopAllChildren() {
+      console.log("all");
+      this.showAllChildren = true;
+    },
+    // 列表触底加载
+    loadMore() {
+      this.loading = true;
+      setTimeout(() => {
+        // 这里的加载列表可以直接覆盖之前的，因为vue会做类似dom diff
+        this.currentPage += 10;
+        this.currentList = this.commentList.slice(0, this.currentPage + 10);
+        this.loading = false;
+        if (this.currentPage >= this.commentList.length) {
+          this.finished = true;
+        }
+      }, 1000);
+    },
     onZanSelected() {
       this.zanSelected = !this.zanSelected;
       this.zanSelected ? this.zanNum++ : this.zanNum--;
@@ -111,9 +165,12 @@ export default {
     async getCommentData() {
       const res = await this.$http.get("/comment/" + this.$route.params.id);
       this.commentList = this.changeToTree(res.data);
+      this.currentList = this.commentList.slice(0, 10);
       this.$emit("commentLength", res.data.length);
-      console.log(this.commentList[2]);
+      console.log(this.commentList[0]);
     },
+
+    // 优化评论结构
     changeToTree(data) {
       function fn(comment_id) {
         let arr = [];
@@ -237,7 +294,7 @@ export default {
   }
 }
 // 次级评论
-.nested-comment {
+.three-children {
   margin: 2.778vw 0 2.778vw 11.111vw;
   padding: 0 1.389vw;
   // border: 1px solid red;

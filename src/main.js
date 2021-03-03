@@ -2,22 +2,23 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-
 import http from "../http.js";
 
-import { 
+import {
   Tab,
-  Tabs, 
-  Icon, 
-  Field, 
-  Toast, 
+  Tabs,
+  Icon,
+  Field,
+  Toast,
   Uploader,
   Divider,
   Dialog,
   ActionSheet,
   List,
-  Collapse, 
-  CollapseItem
+  Collapse,
+  CollapseItem,
+  Popup,
+  Cell,
 } from "vant";
 
 Vue.prototype.$http = http;
@@ -33,6 +34,8 @@ Vue.use(Tab)
   .use(List)
   .use(Collapse)
   .use(CollapseItem)
+  .use(Popup)
+  .use(Cell);
 
 Vue.config.productionTip = false;
 
