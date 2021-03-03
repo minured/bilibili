@@ -45,7 +45,7 @@ export default {
     async onRegisterSubmit() {
       if (this.model.username && this.model.password) {
         const res = await this.$http.post("/login", this.model);
-        console.log(res);
+        // console.log(res);
         if (res.data.code === 200) {
           this.$toast.success(res.data.msg);
           localStorage.setItem("id", res.data.id);

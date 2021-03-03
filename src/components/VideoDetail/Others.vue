@@ -84,7 +84,7 @@ export default {
   props: ["commendData", "userInfo"],
   methods: {
     onReplyClick(parent_id) {
-      console.log(parent_id);
+      // console.log(parent_id);
       this.$refs.inputEl.focus();
       this.commentModel.parent_id = parent_id;
     },
@@ -105,7 +105,7 @@ export default {
       }
       // 正则校验 TODO
       if (!/^.{2,50}$/.test(this.commendContent)) {
-        console.log("校验失败");
+        // console.log("校验失败");
         this.$toast.fail("至少两个字");
         return;
       }
@@ -114,12 +114,12 @@ export default {
       this.commentModel.comment_date = dayjs().format("MM-DD");
       this.commentModel.article_id = this.$route.params.id;
 
-      console.log(this.commentModel);
+      // console.log(this.commentModel);
       const res = await this.$http.post(
         "/comment_post/" + localStorage.getItem("id"),
         this.commentModel
       );
-      console.log(res);
+      // console.log(res);
       if (!res.data.code) {
         this.$toast.success("发表成功");
 
@@ -151,7 +151,7 @@ export default {
     active: {
       immediate: true,
       handler() {
-        console.log("active");
+        // console.log("active");
         if (this.active === 1) {
           this.textareaShow = true;
         } else {

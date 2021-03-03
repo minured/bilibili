@@ -94,7 +94,7 @@
         </div> -->
 
         <!-- 当前仅显示三条二级评论 -->
-        <div class="three-children">
+        <div class="three-children" v-if="item.children.length > 0">
           <ThreeChildren
             :comment-children="item.children"
             @popAllChildren="onPopAllChildren(index)"
@@ -138,12 +138,12 @@ export default {
 
   methods: {
     onPopAllChildren(index) {
-      console.log("all");
+      // console.log("all");
       this.$store.commit("loadIndex", index);
-      console.log(index);
+      // console.log(index);
       this.showAllChildren = true;
       this.$store.commit("loadPopStatus", true);
-      console.log(this.$store.state.showAllChildren);
+      // console.log(this.$store.state.showAllChildren);
     },
     // 列表触底加载
     loadMore() {
@@ -170,11 +170,11 @@ export default {
       this.commentList = this.changeToTree(res.data);
       this.currentList = this.commentList.slice(0, 10);
       this.$emit("commentLength", res.data.length);
-      console.log(this.commentList[0]);
+      // console.log(this.commentList[0]);
       // 把commentList载入store
       this.$store.commit("loadComment", this.commentList);
-      console.log(this.$store.state.commentList);
-      console.log("from store");
+      // console.log(this.$store.state.commentList);
+      // console.log("from store");
     },
 
     // 优化评论结构
@@ -207,7 +207,7 @@ export default {
 .comment-item {
   // background: rgba($color: #000000, $alpha: 0.1);
   border-bottom: 1px solid #e7e7e7;
-  padding-bottom: 2.778vw;
+  padding-bottom: 15px;
   padding-top: 2.778vw;
 }
 .comment-lv1 {
@@ -301,7 +301,7 @@ export default {
 }
 // 次级评论
 .three-children {
-  margin: 2.778vw 0 2.778vw 11.111vw;
+  margin: 2.778vw 0 0 11.111vw;
   padding: 0 1.389vw;
   // border: 1px solid red;
   max-height: 200px;

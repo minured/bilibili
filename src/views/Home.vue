@@ -82,7 +82,7 @@ export default {
       // 先获取本地数据
       if (localStorage.getItem("category")) {
         let localCategory = JSON.parse(localStorage.getItem("category"));
-        console.log(localCategory);
+        // console.log(localCategory);
         this.category = localCategory;
       } else {
         const res = await this.$http.get("/category");
@@ -114,7 +114,7 @@ export default {
       });
       //   新属性添加响应
       //   this.$set(targetItem, "content", res.data);
-      console.log(targetItem);
+      // console.log(targetItem);
       targetItem.content.push(...res.data); //可以复用
       if (res.data.length < targetItem.pagesize) {
         targetItem.finished = true;

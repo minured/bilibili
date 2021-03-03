@@ -55,7 +55,7 @@ export default {
     async onRegisterSubmit() {
       if (this.model.name && this.model.username && this.model.password) {
         const res = await this.$http.post("/register", this.model);
-        console.log(res);
+        // console.log(res);
         // TODO可能是已存在
         if (res.data.code === 200) {
           this.$toast.success(res.data.msg);

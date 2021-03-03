@@ -42,20 +42,20 @@ export default {
   props: ["zanSelected", "collectionSelected", "isFollowed"],
   methods: {
     onCollectionClick() {
-      console.log("collect");
+      // console.log("collect");
       this.$emit("collectionClick");
     },
 
     onDownload() {
-      console.log("download");
+      // console.log("download");
       this.$emit("download");
     },
     follow() {
-      console.log("follow");
+      // console.log("follow");
       this.$emit("follow");
     },
     onZanClick() {
-      console.log("zan");
+      // console.log("zan");
       this.$emit("zanClick");
     },
   },

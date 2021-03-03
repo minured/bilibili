@@ -106,7 +106,7 @@ export default {
   methods: {
     async getUserInfo() {
       const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      console.log(res);
+      // console.log(res);
       this.model = res.data[0];
     },
     async afterRead(file) {
@@ -123,17 +123,17 @@ export default {
         "/update/" + localStorage.getItem("id"),
         this.model
       );
-      console.log(res);
+      // console.log(res);
       if (res.data.code === 200) {
         this.$toast.success("更新成功");
       }
     },
     onNameClick() {
-      console.log("click");
+      // console.log("click");
       this.namePopShow = true;
     },
     onNameConfirm() {
-      console.log("confirm");
+      // console.log("confirm");
       this.model.name = this.inputContent;
       this.inputContent = "";
       this.updateInfo();
@@ -150,19 +150,19 @@ export default {
       this.genderSelectShow = true;
     },
     onGenderSelect(item) {
-      console.log("select");
-      console.log(item);
+      // console.log("select");
+      // console.log(item);
       this.model.gender = item.id.toString();
       this.updateInfo();
     },
     onLogout() {
-      console.log("logout");
+      // console.log("logout");
       localStorage.removeItem("id");
       localStorage.removeItem("token");
       this.$router.push("/login");
     },
     backToUserInfo() {
-      console.log("back");
+      // console.log("back");
       this.$router.back();
     },
   },

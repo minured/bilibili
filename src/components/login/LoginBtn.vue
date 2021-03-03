@@ -12,7 +12,7 @@
 export default {
   methods: {
     btnClick() {
-      console.log("click");
+      // console.log("click");
       this.$emit("btnClick");
     },
   },

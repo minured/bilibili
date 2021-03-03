@@ -6,7 +6,11 @@
           <!-- 评论用户名-->
           <div class="comment-info">
             <span class="user-name">{{ item.userinfo.name || "无名氏" }}</span>
-            <span style="font-size:3.46667vw;color: #212121">：</span>
+            <span
+              style="font-size:3.46667vw;color: #212121"
+              v-if="isLevel3"
+              v-html="'&nbsp;'"
+            ></span>
           </div>
 
           <!-- 评论内容：两种情况，如果是三级评论，则加上 回复 XX： -->
@@ -14,12 +18,12 @@
           <div class="comment-content" v-if="isLevel3">
             回复
             <span style="color: #5090cc">{{ item.parent_user_info.name }}</span>
-            <span style="font-size:3.46667vw">：</span>
+            <span style="font-size:3.46667vw"></span>
             {{ item.comment_content }}
           </div>
 
           <!-- 情况二： 二级评论 -->
-          <div class="comment-content" v-else>{{ item.comment_content }}</div>
+          <div class="comment-content" v-else>：{{ item.comment_content }}</div>
         </div>
       </div>
       <div class="nested-comment">
@@ -46,27 +50,23 @@ export default {
     continueSendID(id) {
       this.sendCommentID(id);
     },
-
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .page {
-  
 }
 .comment-item {
 }
 .current-level {
   // border: 1px solid red;
   display: flex;
-  padding-bottom: 2.778vw;
-  padding-top: 2.778vw;
+  padding: 2vw 0;
   width: 100%;
 
   // 嵌套评论
   .comment {
-    
     flex: 1;
     // border: 1px solid red;
     display: flex;
@@ -79,7 +79,7 @@ export default {
         color: #5090cc;
       }
     }
-  
+
     .comment-content {
       // border: 1px solid red;
       font-size: 3.46667vw;

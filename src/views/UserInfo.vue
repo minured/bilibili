@@ -22,7 +22,7 @@ export default {
   methods: {
     async userInfoData() {
       const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      console.log(res);
+      // console.log(res);
       this.model = res.data[0];
     },
   },
