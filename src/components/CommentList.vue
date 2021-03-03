@@ -97,13 +97,12 @@
         <div class="three-children">
           <ThreeChildren
             :comment-children="item.children"
-            @popAllChildren="onPopAllChildren"
+            @popAllChildren="onPopAllChildren(index)"
             :showAllChildren="showAllChildren"
           />
         </div>
       </div>
     </van-list>
-    
   </div>
 </template>
 
@@ -138,9 +137,13 @@ export default {
   },
 
   methods: {
-    onPopAllChildren() {
+    onPopAllChildren(index) {
       console.log("all");
+      this.$store.commit("loadIndex", index);
+      console.log(index);
       this.showAllChildren = true;
+      this.$store.commit("loadPopStatus", true);
+      console.log(this.$store.state.showAllChildren);
     },
     // 列表触底加载
     loadMore() {
@@ -168,6 +171,10 @@ export default {
       this.currentList = this.commentList.slice(0, 10);
       this.$emit("commentLength", res.data.length);
       console.log(this.commentList[0]);
+      // 把commentList载入store
+      this.$store.commit("loadComment", this.commentList);
+      console.log(this.$store.state.commentList);
+      console.log("from store");
     },
 
     // 优化评论结构
@@ -222,7 +229,6 @@ export default {
   .right {
     flex: 1;
     .comment-info {
-      background: rgba($color: #000000, $alpha: 0.1);
       display: flex;
       justify-content: space-between;
 

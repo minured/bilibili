@@ -3,7 +3,6 @@
     <div class="navbar-wrapper">
       <NavBar :userInfo="userInfo" />
     </div>
-    <button @click="pop">弹出</button>
     <div class="video-wrapper" v-if="videoData">
       <VideoPlay :videoData="videoData" />
       <VideoTitle :videoData="videoData" @onChange="onChange" />
@@ -20,24 +19,30 @@
 
     <!-- 推荐和评论 -->
     <Others :commendData="commendData" :userInfo="userInfo" />
+
+    <!-- 所有二级评论的弹出层 -->
     <van-popup
-      v-model="showAllChildren"
+      v-model="$store.state.showAllChildren"
       lock-scroll
       position="bottom"
-      lazy-render
+      :lazy-render="true"
       :close-on-popstate="true"
-      :closeable="true"
       :overlay-style="{ background: 'rgba(0, 0, 0, 0)' }"
+      :style="{ height: '80%' }"
     >
-      <p>wdadwd</p>
-      <p>wdadwd</p>
-      <p>wdadwd</p>
-      <p>wdadwd</p>
-      <p>wdadwd</p>
-      <p>wdadwd</p>
-      <p>wdadwd</p>
-      <p>wdadwd</p>
-      <p>wdadwd</p>
+      <div class="comment-head">
+        <div class="title">
+          评论详情
+        </div>
+        <div class="closeBtn" @click="$store.commit('loadPopStatus', false)">
+          <van-icon name="cross" size="5vw" />
+        </div>
+      </div>
+      <div class="parent-comment">
+        父评论
+        <CommentItem :currentComment="getCurrentComment()" />
+      </div>
+      <NestedComment :commentChildren="getCommentChildren()" />
     </van-popup>
   </div>
 </template>
@@ -48,6 +53,8 @@ import VideoPlay from "@/components/VideoDetail/VideoPlay";
 import VideoTitle from "@/components/VideoDetail/VideoTitle";
 import VideoOperation from "@/components/VideoDetail/VideoOperation";
 import Others from "@/components/VideoDetail/Others";
+import NestedComment from "@/components/NestedComment";
+import CommentItem from "@/components/CommentItem";
 export default {
   data() {
     return {
@@ -68,8 +75,27 @@ export default {
     VideoTitle,
     VideoOperation,
     Others,
+    NestedComment,
+    CommentItem,
   },
   methods: {
+    getCurrentComment() {
+      const index = this.$store.state.currentCommentIndex;
+      if (this.$store.state.commentList) {
+        return this.$store.state.commentList[index];
+      }
+    },
+    getCommentChildren() {
+      const index = this.$store.state.currentCommentIndex;
+      console.log(index);
+      if (this.$store.state.commentList) {
+        return this.$store.state.commentList[index].children;
+      }
+    },
+    testStore() {
+      this.$store.commit("increment", 8);
+      console.log(this.$store.state.count);
+    },
     pop() {
       this.showAllChildren = true;
     },
@@ -200,5 +226,30 @@ export default {
 }
 .video-wrapper {
   // background: rgba($color: #000000, $alpha: 0.2);
+}
+.comment-head {
+  position: fixed;
+  width: 95%;
+  display: flex;
+  background: rgb(255, 255, 255);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  line-height: 20px;
+  align-items: center;
+
+  .title {
+    font-size: 14px;
+    color: #212121;
+  }
+  .closeBtn {
+    // border: 1px solid red;
+    padding-top: 2px;
+  }
+}
+.parent-comment {
+  background: red;
+  margin-top: 36px;
 }
 </style>
