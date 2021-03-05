@@ -35,6 +35,7 @@
 import LoginTop from "@/components/login/LoginTop";
 import LoginText from "@/components/login/LoginText";
 import LoginBtn from "@/components/login/LoginBtn";
+import { register } from "@/../http";
 
 export default {
   components: {
@@ -54,8 +55,9 @@ export default {
   methods: {
     async onRegisterSubmit() {
       if (this.model.name && this.model.username && this.model.password) {
-        const res = await this.$http.post("/register", this.model);
-        // console.log(res);
+        // const res = await this.$http.post("/register", this.model);
+        const res = await register(this.model);
+        console.log(res);
         // TODO可能是已存在
         if (res.data.code === 200) {
           this.$toast.success(res.data.msg);
