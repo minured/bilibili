@@ -5,17 +5,13 @@ const http = axios.create({
   baseURL: "http://localhost:3456/api",
 });
 
-const register = (model) => {
-  return http.post("/register", model);
-};
-
 //在then或者catch之前 进行拦截
 // 对于进入页面发送ajax的页面， 可达到路由守卫的效果
 // 添加请求拦截器
 http.interceptors.request.use(
   function(config) {
     // 判断本地token和id再发送请求
-    if (localStorage.getItem("id") && localStorage.getItem("token")) {
+    if (localStorage.getItem("username") && localStorage.getItem("token")) {
       config.headers.Authorization = "Bearer " + localStorage.getItem("token");
     }
 
@@ -29,11 +25,9 @@ http.interceptors.request.use(
 // 添加响应拦截器
 http.interceptors.response.use(
   function(response) {
-    // 对响应数据做点什么
     return response;
   },
   function(error) {
-    // 对响应错误做点什么
     console.dir(error);
     if (error.response.status === 401 || error.response.status === 402) {
       router.push("/login");
@@ -43,4 +37,9 @@ http.interceptors.response.use(
   }
 );
 
-export { http, register };
+// 接口列表
+const register = (model) => http.post("/register", model);
+const userInfo = (username) => http.get("/user", username);
+const updateUserInfo = (model) => http.put("/user", model);
+
+export { http, register, userInfo, updateUserInfo };

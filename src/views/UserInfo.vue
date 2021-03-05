@@ -2,13 +2,15 @@
   <div class="userinfo">
     <NavBar :userInfo="model" />
     <div class="banner"></div>
-    <UserDetail :user-data="model" />
+    <UserDetail :userInfo="model" />
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar";
 import UserDetail from "@/components/UserDetail";
+import { userInfo } from "@/../http";
+
 export default {
   data() {
     return {
@@ -21,9 +23,10 @@ export default {
   },
   methods: {
     async userInfoData() {
-      const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      // console.log(res);
-      this.model = res.data[0];
+      const res = await userInfo(localStorage.getItem("id"));
+
+      console.log(res);
+      this.model = res.data;
     },
   },
   created() {

@@ -10,7 +10,7 @@
       placeholder="请输入昵称"
       type=""
       rule="^.{5,16}$"
-      @onContentUpdate="(res) => (model.name = res)"
+      @onContentUpdate="(res) => (model.nickname = res)"
     />
     <LoginText
       label="账号"
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       model: {
-        name: "",
+        nickname: "",
         username: "",
         password: "",
       },
@@ -54,22 +54,19 @@ export default {
   },
   methods: {
     async onRegisterSubmit() {
-      if (this.model.name && this.model.username && this.model.password) {
-        // const res = await this.$http.post("/register", this.model);
+      if (this.model.nickname && this.model.username && this.model.password) {
         const res = await register(this.model);
         console.log(res);
-        // TODO可能是已存在
-        if (res.data.code === 200) {
-          this.$toast.success(res.data.msg);
-
+        if (res.data.status === 200) {
+          this.$toast.success(res.data.message);
           // 存储账号信息
-          window.localStorage.setItem("id", res.data.id);
-          window.localStorage.setItem("token", res.data.objtoken);
+          window.localStorage.setItem("username", res.data.username);
+          window.localStorage.setItem("token", res.data.token);
           setTimeout(() => {
             this.$router.push("/userinfo");
-          }, 1000);
+          }, 800);
         } else {
-          this.$toast.success(res.data.msg);
+          this.$toast.fail(res.data.message);
         }
       } else {
         this.$toast.fail("格式错误,请重新输入");

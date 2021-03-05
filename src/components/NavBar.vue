@@ -1,26 +1,32 @@
 <template>
   <div class="navbar">
+    <!-- 首页logo -->
     <div class="left">
       <img src="@/assets/logo.png" alt="" @click="$router.push('/')" />
     </div>
+    <!-- 搜索栏 -->
     <div class="middle" @click="$router.push('/search')">
       <van-icon name="search" color="#999" size="4.444vw" />
       <span>刀剑神域</span>
     </div>
+    <!-- 右边头像 -->
     <div class="right">
       <div>
+        <!-- 用户头像 -->
         <img
-          :src="userInfo.user_img"
+          :src="userInfo.userImg"
           alt=""
-          v-if="userInfo && userInfo.user_img"
+          v-if="userInfo && userInfo.userImg"
           @click="onUserImgClick"
         />
+        <!-- 未设置，默认头像 -->
         <img
           src="@/assets/img/default_img.jpg"
           alt=""
           v-else-if="userInfo"
           @click="onUserImgClick"
         />
+        <!-- 未登录头像 -->
         <img
           src="@/assets/img/login.png"
           alt=""

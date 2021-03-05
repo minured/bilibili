@@ -3,7 +3,10 @@
     <div class="navbar-wrapper">
       <NavBar :userInfo="model" />
     </div>
+
+    <!-- 个人信息项 -->
     <div class="edit-list">
+      <!-- 头像及上传 -->
       <div class="user-img">
         <van-uploader
           :after-read="afterRead"
@@ -11,38 +14,36 @@
           preview-size="100vw"
         />
         <editItem label="头像" has-border="true">
-          <img
-            :src="model.user_img"
-            alt=""
-            slot="right"
-            v-if="model.user_img"
-          />
+          <img :src="model.userImg" alt="" slot="right" v-if="model.userImg" />
           <img src="@/assets/img/default_img.jpg" alt="" slot="right" v-else />
         </editItem>
       </div>
-
       <editItem
         label="昵称"
         has-border="true"
-        :rightText="model.name"
+        :rightText="model.nickname"
         @itemClick="onNameClick"
       />
       <editItem label="UID" has-border="true" :rightText="model.username" />
+
       <editItem
         label="性别"
         has-border="true"
         @itemClick="onGenderClick"
-        :rightText="model.gender === '1' ? '男' : '女'"
+        :rightText="model.gender === 1 ? '男' : '女'"
       />
       <editItem label="个性签名" @itemClick="onDescClick" />
     </div>
+
+    <!-- 下部按钮 -->
     <div class="btns-wrapper">
       <EditBtn text="退出登录" hasBorder="true" @btnClick="onLogout" />
       <EditBtn text="返回空间" @btnClick="backToUserInfo" />
     </div>
 
+    <!-- 弹出层 -->
     <!-- 昵称编辑 -->
-    <!-- TODO  添加正则校验 -->
+    <!-- TODO 添加正则校验 -->
     <van-dialog
       v-model="namePopShow"
       title="昵称"
@@ -83,6 +84,7 @@
 import NavBar from "@/components/NavBar";
 import EditItem from "@/components/EditUserInfo/editItem";
 import EditBtn from "@/components/EditUserInfo/EditBtn";
+import { userInfo, updateUserInfo } from "@/../http";
 
 export default {
   components: {
@@ -105,10 +107,11 @@ export default {
   },
   methods: {
     async getUserInfo() {
-      const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      // console.log(res);
-      this.model = res.data[0];
+      const res = await userInfo(localStorage.getItem("username"));
+      console.log(res);
+      this.model = res.data;
     },
+    // 文件上传
     async afterRead(file) {
       // FormData对象用以将数据编译成键值对，以便用XMLHttpRequest来发送数据
       const formdata = new FormData();
@@ -118,23 +121,19 @@ export default {
       this.model.user_img = res.data.url;
       this.updateInfo();
     },
+
     async updateInfo() {
-      const res = await this.$http.post(
-        "/update/" + localStorage.getItem("id"),
-        this.model
-      );
-      // console.log(res);
-      if (res.data.code === 200) {
+      const res = await updateUserInfo(this.model);
+      console.log(res);
+      if (res.data.status === 200) {
         this.$toast.success("更新成功");
       }
     },
     onNameClick() {
-      // console.log("click");
       this.namePopShow = true;
     },
     onNameConfirm() {
-      // console.log("confirm");
-      this.model.name = this.inputContent;
+      this.model.nickname = this.inputContent;
       this.inputContent = "";
       this.updateInfo();
     },
@@ -142,7 +141,7 @@ export default {
       this.descPopShow = true;
     },
     onDescConfirm() {
-      this.model.user_desc = this.inputContent;
+      this.model.userDesc = this.inputContent;
       this.inputContent = "";
       this.updateInfo();
     },
@@ -152,7 +151,8 @@ export default {
     onGenderSelect(item) {
       // console.log("select");
       // console.log(item);
-      this.model.gender = item.id.toString();
+      this.model.gender = item.id;
+      console.log(this.model.gender);
       this.updateInfo();
     },
     onLogout() {

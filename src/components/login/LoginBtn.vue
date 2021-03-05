@@ -22,7 +22,6 @@ export default {
 <style lang="scss">
 .btn-wrapper {
   padding: 4.167vw 2.778vw;
-  background: rgba(0, 0, 0, 0.3);
   .login-btn {
     height: 12.5vw;
     background: #ff9db5;

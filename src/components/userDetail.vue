@@ -1,11 +1,11 @@
 <template>
   <div class="user-detail">
+    <!-- 上部，头像和编辑资料 -->
     <div class="detail-part1">
-      <!-- 默认头像 -->
       <img
-        :src="userData.user_img"
+        :src="userInfo.userImg"
         alt=""
-        v-if="userData.user_img"
+        v-if="userInfo.userImg"
         class="part1-left"
       />
       <img
@@ -34,24 +34,28 @@
         <div @click="$router.push('/edit')">编辑资料</div>
       </div>
     </div>
-
+    <!-- 下部，昵称签名uid -->
     <div class="detail-part2">
       <p class="name">
-        {{ userData.name }}
+        {{ userInfo.nickname }}
         <svg class="icon" aria-hidden="true">
-          <use :xlink:href="userData.gender === '0' ? '#icon-female' : '#icon-male'"></use>
+          <use
+            :xlink:href="
+              userInfo.gender === 0 ? '#icon-female' : '#icon-male'
+            "
+          ></use>
         </svg>
       </p>
       <p class="line2">
-        <span class="introduction" v-if="userData.user_desc">{{
-          userData.user_desc
+        <span class="introduction" v-if="userInfo.userDesc">{{
+          userInfo.userDesc
         }}</span>
         <span class="introduction" v-else>这个人很神秘, 什么都没有写</span>
         <a href="" @click.prevent="showUid = !showUid">{{
           showUid ? "展开" : "收起"
         }}</a>
       </p>
-      <p class="uid" v-show="showUid">uid:{{ userData.username }}</p>
+      <p class="uid" v-show="showUid">uid: {{ userInfo.username }}</p>
     </div>
   </div>
 </template>
@@ -65,7 +69,7 @@ export default {
     };
   },
   methods: {},
-  props: ["userData"],
+  props: ["userInfo"],
 };
 </script>
 
@@ -75,6 +79,7 @@ export default {
   background: white;
   padding: 3.333vw;
   .detail-part1 {
+    // border: 1px solid red;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -130,6 +135,7 @@ export default {
     }
   }
   .detail-part2 {
+    // border: 1px solid red;
     .name {
       margin-bottom: 1.389vw;
       font-size: 4.8vw;
