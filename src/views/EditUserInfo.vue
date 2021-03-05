@@ -84,7 +84,7 @@
 import NavBar from "@/components/NavBar";
 import EditItem from "@/components/EditUserInfo/editItem";
 import EditBtn from "@/components/EditUserInfo/EditBtn";
-import { userInfo, updateUserInfo } from "@/../http";
+import { userInfo, updateUserInfo, upload } from "@/../http";
 
 export default {
   components: {
@@ -116,10 +116,9 @@ export default {
       // FormData对象用以将数据编译成键值对，以便用XMLHttpRequest来发送数据
       const formdata = new FormData();
       formdata.append("file", file.file);
-      const res = await this.$http.post("/upload", formdata);
-      //   console.log(res)
-      this.model.user_img = res.data.url;
-      this.updateInfo();
+      const res = await upload(formdata);
+      this.model.userImg = res.data.userImg;
+      console.log(res);
     },
 
     async updateInfo() {

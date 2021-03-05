@@ -40,9 +40,7 @@
         {{ userInfo.nickname }}
         <svg class="icon" aria-hidden="true">
           <use
-            :xlink:href="
-              userInfo.gender === 0 ? '#icon-female' : '#icon-male'
-            "
+            :xlink:href="userInfo.gender === 0 ? '#icon-female' : '#icon-male'"
           ></use>
         </svg>
       </p>
@@ -61,6 +59,7 @@
 </template>
 
 <script>
+import "@/assets/iconfont.js";
 export default {
   data() {
     return {

@@ -41,5 +41,6 @@ http.interceptors.response.use(
 const register = (model) => http.post("/register", model);
 const userInfo = (username) => http.get("/user", username);
 const updateUserInfo = (model) => http.put("/user", model);
+const upload = (data) => http.post("/upload", data);
 
-export { http, register, userInfo, updateUserInfo };
+export { http, register, userInfo, updateUserInfo, upload };
