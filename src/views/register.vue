@@ -76,6 +76,13 @@ export default {
       }
     },
   },
+
+  mounted() {
+    console.log("mounted");
+    this.$http("/register", this.model).then((res) => {
+      console.log(res);
+    });
+  },
 };
 </script>
 

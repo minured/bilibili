@@ -13,15 +13,16 @@ module.exports = {
   devServer: {
     host: "0.0.0.0",
     // 跨域设置
-    proxy: {
-      "/api": {
-        target: "http://localhost:3456", //node.js服务器运行的地址
-        ws: true,
-        changeOrigin: true,
-        pathRewrite: {
-          "^/api": "http://localhost:3456", //路径重写
-        },
-      },
-    },
+    // proxy: {
+    //   "/api": {
+    //     //node.js服务器运行的地址
+    //     target: "http://localhost:3456",
+    //     changeOrigin: true,
+    //     //路径重写
+    //     pathRewrite: {
+    //       "^/api": "http://localhost:3456",
+    //     },
+    //   },
+    // },
   },
 };
