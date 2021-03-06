@@ -43,5 +43,16 @@ const userInfo = (username) => http.get("/user", username);
 const updateUserInfo = (model) => http.put("/user", model);
 const upload = (data) => http.post("/upload", data);
 const login = (data) => http.post("/login", data);
+const category = () => http.get("/category");
+const videoList = (categoryId) => http.get("/category/" + categoryId);
 
-export { http, register, userInfo, updateUserInfo, upload, login };
+export {
+  http,
+  register,
+  userInfo,
+  updateUserInfo,
+  upload,
+  login,
+  category,
+  videoList,
+};

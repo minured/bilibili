@@ -3,10 +3,14 @@
     <div class="navbar-wrapper">
       <NavBar :userInfo="model" />
     </div>
-    <!-- <div class="video-wrapper">
+    <!-- 视频列表 -->
+    <div class="video-wrapper">
+      <!-- 编辑按钮 -->
       <div class="edit-category" @click="editCategory">
         <van-icon name="setting-o" size="5vw" color="#666" />
       </div>
+
+      <!-- 滑动切换 -->
       <van-tabs
         v-model="active"
         swipeable
@@ -15,7 +19,7 @@
         sticky
         :color="biliColor"
       >
-        <van-tab v-for="(item, i) in category" :title="item.title" :key="i">
+        <van-tab v-for="(item, i) in category" :title="item.name" :key="i">
           <van-list
             v-model="item.loading"
             :finished="item.finished"
@@ -24,6 +28,7 @@
             :immediate-check="false"
             offset="50"
           >
+            <!-- 单个视频项 -->
             <div class="video-item-wrapper">
               <video-item
                 v-for="(video, index) in item.content"
@@ -36,18 +41,18 @@
           </van-list>
         </van-tab>
       </van-tabs>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar";
-// import VideoItem from "@/components/VideoItem";
-import { userInfo } from "@/../http";
+import VideoItem from "@/components/VideoItem";
+import { userInfo, category, videoList } from "@/../http";
 export default {
   components: {
     NavBar,
-    // VideoItem,
+    VideoItem,
   },
   data() {
     return {
@@ -69,60 +74,74 @@ export default {
   methods: {
     // 下滑加载
     loadMore() {
+      console.log("loadmore");
       const targetItem = this.category[this.active];
+      // 模拟加载
       setTimeout(() => {
-        targetItem.page += 1;
-        this.getContent();
+        targetItem.sliceIndex += 10;
+        if (targetItem.sliceIndex <= targetItem.contentLength) {
+          console.log("继续加10");
+        } else {
+          targetItem.sliceIndex = targetItem.contentLength;
+          console.log("等于长度");
+          targetItem.finished = true;
+        }
+        targetItem.content = targetItem.allContent.slice(
+          0,
+          targetItem.sliceIndex
+        );
         targetItem.loading = false;
-        // 加载两遍是因为没有finished=true
+        console.log(targetItem.content);
       }, 1000);
     },
     // 用户信息，navbar使用
     async getUserInfo() {
       const res = await userInfo(localStorage.getItem("username"));
-      this.model = res.data
+      this.model = res.data;
     },
     async getCategory() {
+      console.log("getCategory");
       // 先获取本地数据
       if (localStorage.getItem("category")) {
         let localCategory = JSON.parse(localStorage.getItem("category"));
-        // console.log(localCategory);
+        console.log("本地目录");
         this.category = localCategory;
       } else {
-        const res = await this.$http.get("/category");
-        this.category = res.data;
+        const res = await category();
+        this.category = res.data.category;
+        console.log(this.category);
       }
 
-      //   记录获取数量和起始
-      this.category.map((item) => {
-        this.$set(item, "content", []);
-        this.$set(item, "page", 0);
-        this.$set(item, "pagesize", 10);
-        this.$set(item, "loading", false);
-        this.$set(item, "finished", false);
+      // 给每个分类添加记录视频内容的字段 content
+      this.category.forEach((item) => {
+        this.$set(item, "content", []),
+          this.$set(item, "allContent", []),
+          this.$set(item, "sliceIndex", 10),
+          this.$set(item, "finished", false),
+          this.$set(item, "loading", false),
+          this.$set(item, "contentLength", undefined);
       });
-      //   获取首页内容
+
+      // 首次加载获取首页
       this.getContent();
     },
 
     async getContent() {
+      console.log("getContent");
       const targetItem = this.category[this.active];
       if (!targetItem) {
         return;
       }
-      const res = await this.$http.get("/detail/" + targetItem._id, {
-        params: {
-          page: targetItem.page,
-          pagesize: targetItem.pagesize,
-        },
-      });
-      //   新属性添加响应
-      //   this.$set(targetItem, "content", res.data);
-      // console.log(targetItem);
-      targetItem.content.push(...res.data); //可以复用
-      if (res.data.length < targetItem.pagesize) {
-        targetItem.finished = true;
+      // 加载完后不再加载
+      if (targetItem.finished) {
+        return;
       }
+      const res = await videoList(targetItem.id);
+      console.log(res);
+      targetItem.content.push(...res.data.slice(0, targetItem.sliceIndex));
+      targetItem.allContent.push(...res.data);
+      targetItem.contentLength = res.data.length;
+      // this.currentVideos = res.data
     },
     onVideoClick(videoId) {
       this.$router.push("/videoDetail/" + videoId);
@@ -132,17 +151,16 @@ export default {
     },
   },
   mounted() {
-    console.log("mounted");
     if (localStorage.getItem("token") && localStorage.getItem("username")) {
-      console.log("s");
       this.getUserInfo();
     }
     this.getCategory();
   },
   watch: {
-    // active() {
-    //   this.getContent();
-    // },
+    // 监听当前展示的tab
+    active() {
+      this.getContent();
+    },
   },
 };
 </script>
