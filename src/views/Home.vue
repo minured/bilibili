@@ -3,7 +3,7 @@
     <div class="navbar-wrapper">
       <NavBar :userInfo="model" />
     </div>
-    <div class="video-wrapper">
+    <!-- <div class="video-wrapper">
       <div class="edit-category" @click="editCategory">
         <van-icon name="setting-o" size="5vw" color="#666" />
       </div>
@@ -36,17 +36,18 @@
           </van-list>
         </van-tab>
       </van-tabs>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar";
-import VideoItem from "@/components/VideoItem";
+// import VideoItem from "@/components/VideoItem";
+import { userInfo } from "@/../http";
 export default {
   components: {
     NavBar,
-    VideoItem,
+    // VideoItem,
   },
   data() {
     return {
@@ -58,13 +59,15 @@ export default {
   },
   // 钩子函数，keep-alive时，更新数据
   activated() {
-    this.getCategory();
-    if (localStorage.getItem("token") && localStorage.getItem("id")) {
-      this.getUserInfo();
-    }
-    this.getCategory();
+    console.log("active");
+    // this.getCategory();
+    // if (localStorage.getItem("token") && localStorage.getItem("username")) {
+    //   this.getUserInfo();
+    // }
+    // this.getCategory();
   },
   methods: {
+    // 下滑加载
     loadMore() {
       const targetItem = this.category[this.active];
       setTimeout(() => {
@@ -74,9 +77,10 @@ export default {
         // 加载两遍是因为没有finished=true
       }, 1000);
     },
+    // 用户信息，navbar使用
     async getUserInfo() {
-      const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      this.model = res.data[0];
+      const res = await userInfo(localStorage.getItem("username"));
+      this.model = res.data
     },
     async getCategory() {
       // 先获取本地数据
@@ -128,15 +132,17 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+    console.log("mounted");
+    if (localStorage.getItem("token") && localStorage.getItem("username")) {
+      console.log("s");
       this.getUserInfo();
     }
     this.getCategory();
   },
   watch: {
-    active() {
-      this.getContent();
-    },
+    // active() {
+    //   this.getContent();
+    // },
   },
 };
 </script>
