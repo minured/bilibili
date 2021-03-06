@@ -26,6 +26,7 @@
 import LoginTop from "@/components/login/LoginTop";
 import LoginText from "@/components/login/LoginText";
 import LoginBtn from "@/components/login/LoginBtn";
+import { login } from "@/../http";
 
 export default {
   components: {
@@ -44,17 +45,17 @@ export default {
   methods: {
     async onRegisterSubmit() {
       if (this.model.username && this.model.password) {
-        const res = await this.$http.post("/login", this.model);
-        // console.log(res);
-        if (res.data.code === 200) {
-          this.$toast.success(res.data.msg);
-          localStorage.setItem("id", res.data.id);
+        const res = await login(this.model);
+        console.log(res);
+        if (res.data.status === 200) {
+          this.$toast.success(res.data.message);
+          localStorage.setItem("username", res.data.username);
           localStorage.setItem("token", res.data.token);
           setTimeout(() => {
             this.$router.push("/userinfo");
           }, 1000);
         } else {
-          this.$toast.fail(res.data.msg);
+          this.$toast.fail(res.data.message);
         }
       } else {
         this.$toast.fail("格式错误,请重新输入");
