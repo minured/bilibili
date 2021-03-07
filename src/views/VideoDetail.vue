@@ -18,10 +18,10 @@
     </div>
 
     <!-- 推荐和评论 -->
-    <!-- <Others :commendData="commendData" :userInfo="userInfo" /> -->
+    <Others :commendData="commendData" :userInfo="userInfo" />
 
     <!-- 所有二级评论的弹出层 -->
-    <!-- <van-popup
+    <van-popup
       v-model="$store.state.showAllChildren"
       lock-scroll
       position="bottom"
@@ -30,6 +30,7 @@
       :overlay-style="{ background: 'rgba(0, 0, 0, 0)' }"
       :style="{ height: '80%' }"
     >
+      <!-- 标题 -->
       <div class="comment-head">
         <div class="title">
           评论详情
@@ -38,6 +39,7 @@
           <van-icon name="cross" size="5vw" />
         </div>
       </div>
+      <!-- 父评论 -->
       <div class="parent-comment">
         <CommentItem
           :currentComment="getCurrentComment()"
@@ -50,19 +52,20 @@
           :zanNum="commentZanNum"
         />
       </div>
+      <!-- 递归子评论 -->
       <div class="blanking"></div>
       <div class="nested-comment-wrapper">
         <NestedComment :commentChildren="getCommentChildren()" />
       </div>
-    </van-popup> -->
+    </van-popup>
 
     <!-- 分享面板 -->
-    <!-- <van-share-sheet
+    <van-share-sheet
       v-model="showShare"
       title="立即分享给好友"
       :options="options"
       @select="onShareSelect"
-    /> -->
+    />
   </div>
 </template>
 
@@ -71,10 +74,16 @@ import NavBar from "@/components/NavBar";
 import VideoPlay from "@/components/VideoDetail/VideoPlay";
 import VideoTitle from "@/components/VideoDetail/VideoTitle";
 import VideoOperation from "@/components/VideoDetail/VideoOperation";
-// import Others from "@/components/VideoDetail/Others";
-// import NestedComment from "@/components/NestedComment";
-// import CommentItem from "@/components/CommentItem";
-import { videoDetail, userInfo, initLike, likeVideo } from "@/../http";
+import Others from "@/components/VideoDetail/Others";
+import NestedComment from "@/components/NestedComment";
+import CommentItem from "@/components/CommentItem";
+import {
+  videoDetail,
+  userInfo,
+  initLike,
+  likeVideo,
+  videoCommend,
+} from "@/../http";
 
 export default {
   data() {
@@ -110,9 +119,9 @@ export default {
     VideoPlay,
     VideoTitle,
     VideoOperation,
-    // Others,
-    // NestedComment,
-    // CommentItem,
+    Others,
+    NestedComment,
+    CommentItem,
   },
   methods: {
     onShareSelect(option) {
@@ -140,7 +149,6 @@ export default {
     },
     getCommentChildren() {
       const index = this.$store.state.currentCommentIndex;
-      // console.log(index);
       if (
         this.$store.state.commentList &&
         this.$store.state.commentList[index]
@@ -170,7 +178,7 @@ export default {
     },
     async initCollection() {
       const res = await initLike(this.$route.params.id);
-      console.log(res.data);
+      // console.log(res.data);
       this.collectionSelected = res.data.isLiked;
     },
     async onCollectionClick() {
@@ -206,13 +214,14 @@ export default {
       window.open(this.videoData.video.content);
     },
     async getCommend() {
-      const res = await this.$http.get("/commend");
+      // console.log("commend");
+      const res = await videoCommend();
       this.commendData = res.data;
     },
   },
   created() {
     this.getVideoData();
-    // this.getCommend();
+    this.getCommend();
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
       this.getUserInfo();
       this.initCollection();

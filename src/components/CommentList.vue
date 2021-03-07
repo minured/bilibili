@@ -17,9 +17,9 @@
           <!-- 左边头像 -->
           <div class="left">
             <img
-              :src="item.userinfo.user_img"
+              :src="item.userInfo.userImg"
               alt=""
-              v-if="item.userinfo && item.userinfo.user_img"
+              v-if="item.userInfo && item.userInfo.userImg"
             />
             <img src="@/assets/img/default_img.jpg" alt="" v-else />
           </div>
@@ -27,17 +27,18 @@
           <div class="right">
             <div class="comment-info">
               <div class="info-left">
-                <p class="user-name" v-if="item.userinfo">
-                  {{ item.userinfo.name || "无名氏" }}
+                <p class="user-name">
+                  {{ item.userInfo.nickname || "无名氏" }}
                 </p>
-                <p class="date">{{ item.comment_date || "no time" }}</p>
+                <p class="date">{{ item.date || "no time" }}</p>
               </div>
 
               <div class="info-right"></div>
             </div>
             <div class="comment-content">
-              {{ item.comment_content }}
+              {{ item.content }}
             </div>
+            <!-- 仅本地效果， 独立点亮TODO，可以在评论列表加字段 -->
             <div class="comment-operation">
               <!-- 点赞 -->
               <div @click="onZanSelected" class="comment-zan">
@@ -85,14 +86,6 @@
           </div>
         </div>
 
-        <!-- 二级评论 -->
-        <!-- <div class="nested-comment">
-          <nested-comment
-            :comment-children="item.children.slice(0, 3)"
-            @sendCommentID="onSendCommendID"
-          />
-        </div> -->
-
         <!-- 当前仅显示三条二级评论 -->
         <div class="three-children" v-if="item.children.length > 0">
           <ThreeChildren
@@ -109,7 +102,7 @@
 <script>
 // import NestedComment from "@/components/NestedComment.vue";
 import ThreeChildren from "@/components/ThreeChildren";
-
+import { getVideoComment } from "@/../http";
 
 export default {
   data() {
@@ -167,25 +160,26 @@ export default {
       this.$emit("replyClick", comment_id);
     },
     async getCommentData() {
-      const res = await this.$http.get("/comment/" + this.$route.params.id);
+      const res = await getVideoComment(this.$route.params.id);
+      // console.log(res.data);
       this.commentList = this.changeToTree(res.data);
+      console.log(this.commentList);
       this.currentList = this.commentList.slice(0, 10);
+      // 除了方法还可以当作传数据
       this.$emit("commentLength", res.data.length);
-      // console.log(this.commentList[0]);
       // 把commentList载入store
       this.$store.commit("loadComment", this.commentList);
-      // console.log(this.$store.state.commentList);
-      // console.log("from store");
     },
 
     // 优化评论结构
     changeToTree(data) {
-      function fn(comment_id) {
+      // 每条评论文档的_id
+      function fn(commentId) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
-          if (data[i].parent_id == comment_id) {
+          if (data[i].parentId == commentId) {
             arr.push(data[i]);
-            data[i].children = fn(data[i].comment_id);
+            data[i].children = fn(data[i]._id);
           }
         }
         return arr;

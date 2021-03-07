@@ -45,7 +45,7 @@
       <van-tab :title="`评论 ${comment_count}`">
         <div class="comment-content">
           <!-- 顶级回复和二级回复的 clcik 事件 -->
-          <comment-list
+          <CommentList
             @commentLength="commentLength"
             @replyClick="onReplyClick"
             ref="commentList"
@@ -124,6 +124,7 @@ export default {
         this.$toast.success("发表成功");
 
         // 刷新评论
+        // 引用子组件的方法
         this.$refs.commentList.getCommentData();
 
         this.commendContent = "";

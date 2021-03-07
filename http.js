@@ -49,6 +49,8 @@ const videoDetail = (videoId) => http.get("/video/" + videoId);
 const initLike = (videoId) => http.get("/video/like/" + videoId);
 const likeVideo = (videoId) => http.post("/video/like/" + videoId);
 const videoCommend = () => http.get("/commend");
+const getVideoComment = (videoId) => http.get("/comment/" + videoId);
+const publishComment = (commentModel) => http.post("/comment", commentModel);
 
 export {
   http,
@@ -63,4 +65,6 @@ export {
   initLike,
   likeVideo,
   videoCommend,
+  getVideoComment,
+  publishComment,
 };

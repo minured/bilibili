@@ -1,10 +1,11 @@
 <template lang="html">
+  <!-- 目前仅二级评论弹出层的 父评论 使用 后续继续封装 -->
   <!-- 一级评论 -->
   <div class="comment-lv1" v-if="currentComment">
     <!-- 左边头像 -->
     <div class="left">
       <img
-        :src="currentComment.userinfo.user_img"
+        :src="currentComment.userInfo.userImg"
         alt=""
         v-if="currentComment.userinfo && currentComment.userinfo.user_img"
       />
@@ -14,10 +15,10 @@
     <div class="right">
       <div class="comment-info">
         <div class="info-left">
-          <p class="user-name" v-if="currentComment.userinfo">
-            {{ currentComment.userinfo.name || "无名氏" }}
+          <p class="user-name" v-if="currentComment.userInfo">
+            {{ currentComment.userInfo.nickname || "无名氏" }}
           </p>
-          <p class="date">{{ currentComment.comment_date || "no time" }}</p>
+          <p class="date">{{ currentComment.date || "no time" }}</p>
         </div>
 
         <div class="info-right"></div>

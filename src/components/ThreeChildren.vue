@@ -9,12 +9,12 @@
         <div class="comment">
           <!-- 评论用户名-->
           <div class="comment-info">
-            <span class="user-name">{{ item.userinfo.name || "无名氏" }}</span>
+            <span class="user-name">{{ item.userInfo.nickname|| "无名氏" }}</span>
             <span style="font-size:3.46667vw;color: #212121">：</span>
           </div>
 
           <!-- 评论内容 -->
-          <div class="comment-content">{{ item.comment_content }}</div>
+          <div class="comment-content">{{ item.content }}</div>
         </div>
       </div>
     </div>

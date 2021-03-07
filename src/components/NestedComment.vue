@@ -1,11 +1,13 @@
 <template>
   <div class="page">
     <div class="comment-item" v-for="(item, i) in commentChildren" :key="i">
-      <div class="current-level" @click="sendCommentID(item.comment_id)">
+      <div class="current-level" @click="sendCommentID(item._id)">
         <div class="comment">
           <!-- 评论用户名-->
           <div class="comment-info">
-            <span class="user-name">{{ item.userinfo.name || "无名氏" }}</span>
+            <span class="user-name">{{
+              item.userInfo.nickname || "无名氏"
+            }}</span>
             <span
               style="font-size:3.46667vw;color: #212121"
               v-if="isLevel3"
@@ -15,17 +17,21 @@
 
           <!-- 评论内容：两种情况，如果是三级评论，则加上 回复 XX： -->
           <!-- 情况一：三级评论 -->
+
           <div class="comment-content" v-if="isLevel3">
             回复
-            <span style="color: #5090cc">{{ item.parent_user_info.name }}</span>
+            <span style="color: #5090cc">{{ item.parentUser }}</span>
             <span style="font-size:3.46667vw"></span>
-            {{ item.comment_content }}
+            <div>{{ item.content }}</div>
           </div>
 
           <!-- 情况二： 二级评论 -->
-          <div class="comment-content" v-else>：{{ item.comment_content }}</div>
+          <div class="comment-content" v-else>：{{ item.content }}</div>
+
+          <!-- {{ JSON.stringify(item.children) }} -->
         </div>
       </div>
+
       <div class="nested-comment">
         <nestedComment
           :commentChildren="item.children"
@@ -50,6 +56,9 @@ export default {
     continueSendID(id) {
       this.sendCommentID(id);
     },
+  },
+  mounted() {
+    console.log(this.commentChildren);
   },
 };
 </script>
