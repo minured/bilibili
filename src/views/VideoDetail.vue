@@ -4,7 +4,7 @@
       <NavBar :userInfo="userInfo" />
     </div>
     <div class="video-wrapper" v-if="videoData">
-    <VideoPlay :videoData="videoData.video" />
+      <VideoPlay :videoData="videoData.video" />
       <VideoTitle :videoData="videoData" @onChange="onChange" />
       <VideoOperation
         :zanSelected="zanSelected"
@@ -74,7 +74,7 @@ import VideoOperation from "@/components/VideoDetail/VideoOperation";
 // import Others from "@/components/VideoDetail/Others";
 // import NestedComment from "@/components/NestedComment";
 // import CommentItem from "@/components/CommentItem";
-import { videoDetail, userInfo } from "@/../http";
+import { videoDetail, userInfo, initLike, likeVideo } from "@/../http";
 
 export default {
   data() {
@@ -162,72 +162,25 @@ export default {
       }
       return true;
     },
-
-    async initFollow() {
-      // console.log(this.videoData);
-      const res = await this.$http.get(
-        "/sub_scription/" + localStorage.getItem("id"),
-        {
-          params: {
-            // 使用了data，要注意时机
-            sub_id: this.videoData.userid,
-          },
-        }
-      );
-      // console.log(res);
-      if (res.data.success === false) {
-        this.isFollowed = false;
-      } else if (res.data.success === true) {
-        this.isFollowed = true;
-      }
-    },
     async follow() {
       if (!this.isLogin()) {
         return;
       }
       this.isFollowed = !this.isFollowed;
-      const res = await this.$http.post(
-        "/sub_scription/" + localStorage.getItem("id"),
-
-        {
-          sub_id: this.videoData.userid,
-        }
-      );
-      // console.log(res);
-      if (res.data.msg === "关注成功") {
-        this.isFollowed = true;
-      } else if (res.data.msg === "取消关注成功") {
-        this.isFollowed = false;
-      }
     },
     async initCollection() {
-      const res = await this.$http.get(
-        "/collection/" + localStorage.getItem("id"),
-        {
-          params: {
-            article_id: this.$route.params.id,
-          },
-        }
-      );
-      if (res.data.success === false) {
-        this.collectionSelected = false;
-      } else if (res.data.success === true) {
-        this.collectionSelected = true;
-      }
+      const res = await initLike(this.$route.params.id);
+      console.log(res.data);
+      this.collectionSelected = res.data.isLiked;
     },
     async onCollectionClick() {
       if (!this.isLogin()) {
         return;
       }
-      const res = await this.$http.post(
-        "/collection/" + localStorage.getItem("id"),
-        { article_id: this.$route.params.id }
-      );
-      if (res.data.msg === "收藏成功") {
-        this.collectionSelected = true;
-      } else if (res.data.msg === "取消收藏成功") {
-        this.collectionSelected = false;
-      }
+      console.log("like");
+      const res = await likeVideo(this.$route.params.id);
+      console.log(res.data);
+      this.collectionSelected = res.data.isLiked;
     },
     // TODO
     async initZan() {
@@ -238,21 +191,19 @@ export default {
     },
     async getUserInfo() {
       const res = await userInfo(localStorage.getItem("username"));
-      this.userInfo = res.data
+      this.userInfo = res.data;
     },
     async getVideoData() {
       const res = await videoDetail(this.$route.params.id);
-      console.log(res.data);
       this.videoData = res.data;
       // this.initFollow();
     },
-
     // van-collapse的折叠行为
     onChange() {
       this.titleWrap = !this.titleWrap;
     },
     download() {
-      window.open(this.videoData.content);
+      window.open(this.videoData.video.content);
     },
     async getCommend() {
       const res = await this.$http.get("/commend");
@@ -261,7 +212,7 @@ export default {
   },
   created() {
     this.getVideoData();
-    this.getCommend();
+    // this.getCommend();
     if (localStorage.getItem("token") && localStorage.getItem("id")) {
       this.getUserInfo();
       this.initCollection();

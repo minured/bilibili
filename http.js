@@ -46,6 +46,9 @@ const login = (data) => http.post("/login", data);
 const category = () => http.get("/category");
 const videoList = (categoryId) => http.get("/category/" + categoryId);
 const videoDetail = (videoId) => http.get("/video/" + videoId);
+const initLike = (videoId) => http.get("/video/like/" + videoId);
+const likeVideo = (videoId) => http.post("/video/like/" + videoId);
+const videoCommend = () => http.get("/commend");
 
 export {
   http,
@@ -56,5 +59,8 @@ export {
   login,
   category,
   videoList,
-  videoDetail
+  videoDetail,
+  initLike,
+  likeVideo,
+  videoCommend,
 };
