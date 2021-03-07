@@ -1,27 +1,28 @@
 <template>
   <van-collapse v-model="activeNames" :border="false" @change="onChange">
     <div class="videoinfo">
-      <van-collapse-item :title="videoData.name" name="1">
+      <van-collapse-item :title="videoData.video.name" name="1">
+        <!-- 通过插槽自定义标题栏内容 -->
         <template #title>
+          <!-- 分类标签和标题 -->
           <div class="video-title" :class="{ 'title-wrap': titleWrap }">
-            <span class="video-type">{{ videoData.category.title }}</span>
-            {{ videoData.name }}
+            <span class="video-type">{{ videoData.category.name }}</span>
+            {{ videoData.video.name }}
           </div>
+          <!-- up主的信息 -->
           <div class="video-moreinfo">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-UPzhu"></use>
             </svg>
-            <span class="up">{{ videoData.userinfo.name }}</span>
+            <span class="up">{{ videoData.upper.nickname }}</span>
             <span class="play-count">2233万观看</span>
             <span class="danmu">1.2万弹幕</span>
-            <span class="date">{{ videoData.date }}</span>
+            <span class="date">03-05</span>
           </div>
         </template>
+        <!-- 折叠部分 简介 -->
         <div class="video-collapse">
-          我是视频简介啦 <br />
-          是视频简介啦 <br />
-          视频简介啦<br />
-          简介啦~
+          {{ videoData.video.introduction }}
         </div>
       </van-collapse-item>
     </div>
@@ -29,6 +30,7 @@
 </template>
 
 <script>
+import "@/assets/iconfont";
 export default {
   data() {
     return {
@@ -113,6 +115,8 @@ export default {
     font-size: 3.2vw;
     line-height: 4.8vw;
     color: #999;
+    padding-left: 15px;
+    padding-right: 15px;
     padding-top: 1.33333vw;
     white-space: pre-wrap;
   }

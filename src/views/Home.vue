@@ -21,12 +21,12 @@
       >
         <van-tab v-for="(item, i) in category" :title="item.name" :key="i">
           <van-list
-            v-model="item.loading"
+            v-model="loading"
             :finished="item.finished"
             finished-text="没有更多了"
             @load="loadMore"
             :immediate-check="false"
-            offset="50"
+            offset="10"
           >
             <!-- 单个视频项 -->
             <div class="video-item-wrapper">
@@ -59,39 +59,37 @@ export default {
       model: null,
       category: [],
       active: 0,
+      loading: false,
       biliColor: "#fb7299",
     };
   },
   // 钩子函数，keep-alive时，更新数据
   activated() {
-    console.log("active");
-    // this.getCategory();
-    // if (localStorage.getItem("token") && localStorage.getItem("username")) {
-    //   this.getUserInfo();
-    // }
-    // this.getCategory();
+    this.getCategory();
+    if (localStorage.getItem("token") && localStorage.getItem("username")) {
+      this.getUserInfo();
+    }
   },
   methods: {
     // 下滑加载
     loadMore() {
       console.log("loadmore");
+
+      // 多列表自定义的loading 和 vant 内置的全局loading不一样
       const targetItem = this.category[this.active];
       // 模拟加载
       setTimeout(() => {
         targetItem.sliceIndex += 10;
-        if (targetItem.sliceIndex <= targetItem.contentLength) {
-          console.log("继续加10");
-        } else {
+        if (targetItem.sliceIndex > targetItem.contentLength) {
           targetItem.sliceIndex = targetItem.contentLength;
-          console.log("等于长度");
           targetItem.finished = true;
         }
+        console.log(targetItem.sliceIndex);
         targetItem.content = targetItem.allContent.slice(
           0,
           targetItem.sliceIndex
         );
-        targetItem.loading = false;
-        console.log(targetItem.content);
+        this.loading = false;
       }, 1000);
     },
     // 用户信息，navbar使用
@@ -100,16 +98,13 @@ export default {
       this.model = res.data;
     },
     async getCategory() {
-      console.log("getCategory");
       // 先获取本地数据
       if (localStorage.getItem("category")) {
         let localCategory = JSON.parse(localStorage.getItem("category"));
-        console.log("本地目录");
         this.category = localCategory;
       } else {
         const res = await category();
         this.category = res.data.category;
-        console.log(this.category);
       }
 
       // 给每个分类添加记录视频内容的字段 content
@@ -120,6 +115,7 @@ export default {
           this.$set(item, "finished", false),
           this.$set(item, "loading", false),
           this.$set(item, "contentLength", undefined);
+        this.$set(item, "allContentDone", false);
       });
 
       // 首次加载获取首页
@@ -127,7 +123,6 @@ export default {
     },
 
     async getContent() {
-      console.log("getContent");
       const targetItem = this.category[this.active];
       if (!targetItem) {
         return;
@@ -136,12 +131,22 @@ export default {
       if (targetItem.finished) {
         return;
       }
+
+      if (targetItem.allContentDone) {
+        return;
+      }
+
       const res = await videoList(targetItem.id);
-      console.log(res);
-      targetItem.content.push(...res.data.slice(0, targetItem.sliceIndex));
-      targetItem.allContent.push(...res.data);
-      targetItem.contentLength = res.data.length;
-      // this.currentVideos = res.data
+      targetItem.content.push(
+        ...res.data.videos.slice(0, targetItem.sliceIndex)
+      );
+      targetItem.allContent.push(...res.data.videos);
+      targetItem.contentLength = res.data.videos.length;
+
+      // 当前分类下内容已全部加载并放入allContent，后续不需要请求
+      if (res.data.status === 200) {
+        targetItem.allContentDone = true;
+      }
     },
     onVideoClick(videoId) {
       this.$router.push("/videoDetail/" + videoId);

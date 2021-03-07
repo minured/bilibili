@@ -12,7 +12,7 @@
           v-for="(item, i) in category"
           :key="i"
           @click="selectedItemClick(i)"
-          >{{ item.title }}</span
+          >{{ item.name }}</span
         >
       </div>
       <van-divider>未选择栏目</van-divider>
@@ -21,7 +21,7 @@
           v-for="(item, i) in removedList"
           :key="i"
           @click="removedItemClick(i)"
-          >{{ item.title }}</span
+          >{{ item.name }}</span
         >
       </div>
     </div>
@@ -31,6 +31,7 @@
 
 <script>
 import NavBar from "@/components/NavBar";
+import { userInfo, category } from "@/../http";
 
 export default {
   data() {
@@ -44,25 +45,26 @@ export default {
     NavBar,
   },
   methods: {
-    onBackClick(){
+    onBackClick() {
       console.log("back");
-      this.$router.back()
+      this.$router.back();
     },
     removedItemClick(index) {
       const removed = this.removedList.splice(index, 1);
       this.category.push(...removed);
     },
     selectedItemClick(index) {
-      if (this.category.length < 2) {
-        this.$toast.fail("请至少保留一个栏目");
+      if (this.category.length < 3) {
+        this.$toast.fail("请至少保留两个栏目");
         return;
       }
       const removed = this.category.splice(index, 1);
       this.removedList.push(...removed);
     },
     async initCategory() {
-      const res = await this.$http.get("/category");
-      this.category = res.data;
+      const res = await category()
+      console.log(res.data);
+      this.category = res.data.category;
     },
     getCategory() {
       if (
@@ -76,13 +78,14 @@ export default {
       this.initCategory();
     },
     async getUserInfo() {
-      const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      this.userInfo = res.data[0];
+      const res = await userInfo(localStorage.getItem("id"));
+      console.log(res.data);
+      this.userInfo = res.data;
     },
   },
   created() {
     this.getCategory();
-    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+    if (localStorage.getItem("token") && localStorage.getItem("username")) {
       this.getUserInfo();
     }
   },
@@ -139,7 +142,6 @@ export default {
   }
 }
 .back-btn {
-  
   border: 0.278vw solid rgb(251, 114, 153);
   box-shadow: 0 0 0.833vw rgba(0, 0, 0, 0.1);
   margin: 0vw 5.556vw;

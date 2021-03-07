@@ -4,7 +4,7 @@
       <NavBar :userInfo="userInfo" />
     </div>
     <div class="video-wrapper" v-if="videoData">
-      <VideoPlay :videoData="videoData" />
+    <VideoPlay :videoData="videoData.video" />
       <VideoTitle :videoData="videoData" @onChange="onChange" />
       <VideoOperation
         :zanSelected="zanSelected"
@@ -18,10 +18,10 @@
     </div>
 
     <!-- 推荐和评论 -->
-    <Others :commendData="commendData" :userInfo="userInfo" />
+    <!-- <Others :commendData="commendData" :userInfo="userInfo" /> -->
 
     <!-- 所有二级评论的弹出层 -->
-    <van-popup
+    <!-- <van-popup
       v-model="$store.state.showAllChildren"
       lock-scroll
       position="bottom"
@@ -54,15 +54,15 @@
       <div class="nested-comment-wrapper">
         <NestedComment :commentChildren="getCommentChildren()" />
       </div>
-    </van-popup>
+    </van-popup> -->
 
     <!-- 分享面板 -->
-    <van-share-sheet
+    <!-- <van-share-sheet
       v-model="showShare"
       title="立即分享给好友"
       :options="options"
       @select="onShareSelect"
-    />
+    /> -->
   </div>
 </template>
 
@@ -71,9 +71,11 @@ import NavBar from "@/components/NavBar";
 import VideoPlay from "@/components/VideoDetail/VideoPlay";
 import VideoTitle from "@/components/VideoDetail/VideoTitle";
 import VideoOperation from "@/components/VideoDetail/VideoOperation";
-import Others from "@/components/VideoDetail/Others";
-import NestedComment from "@/components/NestedComment";
-import CommentItem from "@/components/CommentItem";
+// import Others from "@/components/VideoDetail/Others";
+// import NestedComment from "@/components/NestedComment";
+// import CommentItem from "@/components/CommentItem";
+import { videoDetail, userInfo } from "@/../http";
+
 export default {
   data() {
     return {
@@ -108,9 +110,9 @@ export default {
     VideoPlay,
     VideoTitle,
     VideoOperation,
-    Others,
-    NestedComment,
-    CommentItem,
+    // Others,
+    // NestedComment,
+    // CommentItem,
   },
   methods: {
     onShareSelect(option) {
@@ -235,13 +237,14 @@ export default {
       this.zanSelected = !this.zanSelected;
     },
     async getUserInfo() {
-      const res = await this.$http.get("/user/" + localStorage.getItem("id"));
-      this.userInfo = res.data[0];
+      const res = await userInfo(localStorage.getItem("username"));
+      this.userInfo = res.data
     },
     async getVideoData() {
-      const res = await this.$http.get("/article/" + this.$route.params.id);
-      this.videoData = res.data[0];
-      this.initFollow();
+      const res = await videoDetail(this.$route.params.id);
+      console.log(res.data);
+      this.videoData = res.data;
+      // this.initFollow();
     },
 
     // van-collapse的折叠行为

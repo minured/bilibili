@@ -2,7 +2,7 @@ import axios from "axios";
 import router from "./src/router";
 import Vue from "vue";
 const http = axios.create({
-  baseURL: "http://localhost:3456/api",
+  baseURL: "http://192.168.43.156:3456/api",
 });
 
 //在then或者catch之前 进行拦截
@@ -45,6 +45,7 @@ const upload = (data) => http.post("/upload", data);
 const login = (data) => http.post("/login", data);
 const category = () => http.get("/category");
 const videoList = (categoryId) => http.get("/category/" + categoryId);
+const videoDetail = (videoId) => http.get("/video/" + videoId);
 
 export {
   http,
@@ -55,4 +56,5 @@ export {
   login,
   category,
   videoList,
+  videoDetail
 };
