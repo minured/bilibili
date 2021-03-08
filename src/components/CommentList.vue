@@ -190,6 +190,12 @@ export default {
   created() {
     this.getCommentData();
   },
+  watch: {
+    $route() {
+      console.log("路径变动");
+      this.getCommentData();
+    },
+  },
 };
 </script>
 
