@@ -7,7 +7,7 @@
       <img
         :src="currentComment.userInfo.userImg"
         alt=""
-        v-if="currentComment.userinfo && currentComment.userinfo.user_img"
+        v-if="currentComment.userInfo && currentComment.userInfo.userImg"
       />
       <img src="@/assets/img/default_img.jpg" alt="" v-else />
     </div>
@@ -29,23 +29,23 @@
       <div class="comment-operation">
         <!-- 点赞 -->
         <div @click="$emit('clickZan')" class="comment-zan">
-          <svg class="icon" aria-hidden="true" v-if="!zanSelected">
+          <svg class="icon" aria-hidden="true" >
             <use xlink:href="#icon-zan2"></use>
           </svg>
-          <svg class="icon" aria-hidden="true" v-else>
+          <!-- <svg class="icon" aria-hidden="true" v-else>
             <use xlink:href="#icon-zan2-selected-copy"></use>
-          </svg>
-          <span :class="{ 'selected-color': zanSelected }">{{ zanNum }}</span>
+          </svg> -->
+          <!-- <span :class="{ 'selected-color': zanSelected }">{{ zanNum }}</span> -->
         </div>
 
         <!-- 踩 -->
         <div class="comment-cai" @click="$emit('clickCai')">
-          <svg class="icon" aria-hidden="true" v-if="!caiSelected">
+          <svg class="icon" aria-hidden="true" >
             <use xlink:href="#icon-cai"></use>
           </svg>
-          <svg class="icon" aria-hidden="true" v-else>
+          <!-- <svg class="icon" aria-hidden="true" v-else>
             <use xlink:href="#icon-cai-selected"></use>
-          </svg>
+          </svg> -->
         </div>
 
         <!-- 转发 -->

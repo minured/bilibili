@@ -56,7 +56,6 @@ export default {
     async onRegisterSubmit() {
       if (this.model.nickname && this.model.username && this.model.password) {
         const res = await register(this.model);
-        console.log(res);
         if (res.data.status === 200) {
           this.$toast.success(res.data.message);
           // 存储账号信息

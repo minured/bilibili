@@ -73,7 +73,6 @@ export default {
   methods: {
     // 下滑加载
     loadMore() {
-      console.log("loadmore");
 
       // 多列表自定义的loading 和 vant 内置的全局loading不一样
       const targetItem = this.category[this.active];
@@ -84,7 +83,6 @@ export default {
           targetItem.sliceIndex = targetItem.contentLength;
           targetItem.finished = true;
         }
-        console.log(targetItem.sliceIndex);
         targetItem.content = targetItem.allContent.slice(
           0,
           targetItem.sliceIndex

@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     onBackClick() {
-      console.log("back");
       this.$router.back();
     },
     removedItemClick(index) {
@@ -63,7 +62,6 @@ export default {
     },
     async initCategory() {
       const res = await category()
-      console.log(res.data);
       this.category = res.data.category;
     },
     getCategory() {
@@ -79,7 +77,6 @@ export default {
     },
     async getUserInfo() {
       const res = await userInfo(localStorage.getItem("id"));
-      console.log(res.data);
       this.userInfo = res.data;
     },
   },

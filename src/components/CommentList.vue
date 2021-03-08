@@ -42,41 +42,38 @@
             <div class="comment-operation">
               <!-- 点赞 -->
               <div @click="onZanSelected" class="comment-zan">
-                <svg class="icon" aria-hidden="true" v-if="!zanSelected">
+                <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-zan2"></use>
                 </svg>
-                <svg class="icon" aria-hidden="true" v-else>
-                  <use xlink:href="#icon-zan2-selected-copy"></use>
-                </svg>
-                <span :class="{ 'selected-color': zanSelected }">{{
+                <!-- <span :class="{ 'selected-color': zanSelected }">{{
                   zanNum
-                }}</span>
+                }}</span> -->
               </div>
 
               <!-- 踩 -->
               <div class="comment-cai" @click="caiSelected = !caiSelected">
-                <svg class="icon" aria-hidden="true" v-if="!caiSelected">
+                <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-cai"></use>
                 </svg>
-                <svg class="icon" aria-hidden="true" v-else>
+                <!-- <svg class="icon" aria-hidden="true" v-else>
                   <use xlink:href="#icon-cai-selected"></use>
-                </svg>
+                </svg> -->
               </div>
 
               <!-- 转发 -->
-              <div class="comment-forward" @click="forward = !forward">
-                <svg class="icon" aria-hidden="true" v-if="!forward">
+              <div class="comment-forward" @click="$emit('forward')">
+                <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-forward"></use>
                 </svg>
-                <svg class="icon" aria-hidden="true" v-else>
+                <!-- <svg class="icon" aria-hidden="true" v-else>
                   <use xlink:href="#icon-forward-selected"></use>
-                </svg>
+                </svg> -->
               </div>
 
               <!-- 气泡 -->
               <div
                 class="comment-qipao"
-                @click="$emit('replyClick', item.comment_id)"
+                @click="$emit('reply', item._id)"
               >
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-qipao"></use>
@@ -89,7 +86,8 @@
         <!-- 当前仅显示三条二级评论 -->
         <div class="three-children" v-if="item.children.length > 0">
           <ThreeChildren
-            :comment-children="item.children"
+            @reply="onReply"
+            :currentComment="item"
             @popAllChildren="onPopAllChildren(index)"
             :showAllChildren="showAllChildren"
           />
@@ -125,12 +123,16 @@ export default {
       forward: false,
     };
   },
+  props: ["flushComment"],
   components: {
     // NestedComment,
     ThreeChildren,
   },
 
   methods: {
+    onReply(id){
+      this.$emit("reply", id)
+    },
     onPopAllChildren(index) {
       // console.log("all");
       this.$store.commit("loadIndex", index);
@@ -163,7 +165,6 @@ export default {
       const res = await getVideoComment(this.$route.params.id);
       // console.log(res.data);
       this.commentList = this.changeToTree(res.data);
-      console.log(this.commentList);
       this.currentList = this.commentList.slice(0, 10);
       // 除了方法还可以当作传数据
       this.$emit("commentLength", res.data.length);
@@ -192,7 +193,9 @@ export default {
   },
   watch: {
     $route() {
-      console.log("路径变动");
+      this.getCommentData();
+    },
+    flushComment() {
       this.getCommentData();
     },
   },

@@ -108,7 +108,6 @@ export default {
   methods: {
     async getUserInfo() {
       const res = await userInfo(localStorage.getItem("username"));
-      console.log(res);
       this.model = res.data;
     },
     // 文件上传
@@ -118,12 +117,10 @@ export default {
       formdata.append("file", file.file);
       const res = await upload(formdata);
       this.model.userImg = res.data.userImg;
-      console.log(res);
     },
 
     async updateInfo() {
       const res = await updateUserInfo(this.model);
-      console.log(res);
       if (res.data.status === 200) {
         this.$toast.success("更新成功");
       }
@@ -151,7 +148,6 @@ export default {
       // console.log("select");
       // console.log(item);
       this.model.gender = item.id;
-      console.log(this.model.gender);
       this.updateInfo();
     },
     onLogout() {

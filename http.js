@@ -52,6 +52,7 @@ const videoCommend = () => http.get("/commend");
 const getVideoComment = (videoId) => http.get("/comment/" + videoId);
 const publishComment = (commentModel) => http.post("/comment", commentModel);
 
+
 export {
   http,
   register,

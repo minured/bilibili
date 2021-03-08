@@ -6,9 +6,9 @@
         <div class="user-input">
           <!-- 头像 -->
           <img
-            :src="userInfo.user_img"
+            :src="userInfo.userImg"
             alt=""
-            v-if="userInfo && userInfo.user_img"
+            v-if="userInfo && userInfo.userImg"
           />
           <img src="@/assets/img/default_img.jpg" alt="" v-else />
           <!-- 输入框 -->
@@ -16,13 +16,19 @@
             type="text"
             placeholder="发条友善的评论"
             @focus="onInputFocus"
-            v-model="commendContent"
+            v-model="commentModel.content"
             ref="inputEl"
             @blur="onInputBlur"
             rows="1"
           />
           <!-- 发表按钮 -->
-          <span :class="{ onInput: isInput }">发表</span>
+          <span
+            @click="publishComment"
+            :class="{ onInput: isInput }"
+            class="publish-btn"
+          >
+            发表
+          </span>
         </div>
       </div>
     </div>
@@ -47,8 +53,10 @@
           <!-- 顶级回复和二级回复的 clcik 事件 -->
           <CommentList
             @commentLength="commentLength"
-            @replyClick="onReplyClick"
+            @forward="$emit('forward')"
+            @reply="onReply"
             ref="commentList"
+            :flushComment="flushComment"
           />
         </div>
       </van-tab>
@@ -60,19 +68,21 @@
 import VideoItem from "@/components/VideoItem";
 import CommentList from "@/components/CommentList";
 import dayjs from "dayjs";
+import { publishComment } from "@/../http";
 export default {
   data() {
     return {
+      flushComment: 0,
       textareaShow: false,
       active: 1,
       commendContent: "",
       comment_count: 0,
-      commentModel: {
-        comment_content: "",
-        comment_date: "",
-        parent_id: null,
-        article_id: "",
-      },
+      // commentModel: {
+      //   comment_content: "",
+      //   comment_date: "",
+      //   parent_id: null,
+      //   article_id: "",
+      // },
       biliColor: "#fb7299",
       isInput: false,
     };
@@ -83,10 +93,11 @@ export default {
   },
   props: ["commendData", "userInfo"],
   methods: {
-    onReplyClick(parent_id) {
-      // console.log(parent_id);
-      this.$refs.inputEl.focus();
-      this.commentModel.parent_id = parent_id;
+    onReply(id) {
+      this.$emit("reply", id);
+      this.commentModel.parentId = id;
+      this.$refs.inputEl.focus()
+      // this.onInputFocus()
     },
     commentLength(length) {
       this.comment_count = length;
@@ -134,20 +145,56 @@ export default {
       this.parent_id = null;
     },
     onInputFocus() {
-      if (!this.userInfo) {
-        this.$toast.fail("请先登录");
-        return;
-      }
       this.isInput = true;
       // TODO 添加动画
       this.$refs.inputEl.rows = 3;
     },
     onInputBlur() {
-      this.isInput = false;
-      // TODO 判断行数，调整回复的行数
-      this.$refs.inputEl.rows = 1;
+      // blur事件和click不能同时触发，使用settimeout解决
+      setTimeout(() => {
+        this.isInput = false;
+        // TODO 判断行数，调整回复的行数
+        this.$refs.inputEl.rows = 1;
+      }, 0);
+    },
+    async publishComment() {
+      if (!this.userInfo) {
+        this.$toast.fail("请先登录");
+        return;
+      }
+      console.log(this.commentModel);
+      // TODO
+      if (!/^.{2,50}$/.test(this.commentModel.content.trim())) {
+        this.$toast.fail("至少两个字");
+        return;
+      }
+      const res = await publishComment(this.commentModel);
+      if (res.data.status === 200) {
+        this.flushComment += 1;
+        this.$toast(res.data.message);
+        this.commentModel.content = undefined;
+      }
     },
   },
+  mounted() {
+    // 同步commentModel
+    this.commentModel.videoId = this.$route.params.id;
+    console.log(this.$route.params.id);
+  },
+
+  computed: {
+    // 实现同步vuex的state
+    commentModel: {
+      get() {
+        return this.$store.state.commentModel;
+      },
+      set(model) {
+        console.log("set");
+        this.$store.commit("updateCommentModel", model);
+      },
+    },
+  },
+
   watch: {
     active: {
       immediate: true,
@@ -180,13 +227,13 @@ export default {
   bottom: 0;
   position: fixed;
   z-index: 10;
-  padding: 1.067vw 1.333vw;
+  padding: 1.067vw 0;
   display: none;
   &.textareaShow {
     display: block;
   }
   div.inner {
-    padding: 0 1.333vw;
+    padding: 0 3vw;
     .user-input {
       display: flex;
       justify-content: center;
@@ -206,19 +253,20 @@ export default {
         outline: none;
         line-height: 7.222vw;
         border-radius: 4.167vw;
-        padding: 0.278vw 2.778vw;
+        padding: 0.278vw 2.3vw;
         background: #f4f4f4;
         box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
         margin: 0 15px 0 0px;
       }
 
-      span {
-        display: none;
+      span.publish-btn {
+        // visibility: hidden;
         color: $bili-color;
         // TODO 实现切换动画
-        &.onInput {
-          display: inline;
-        }
+        // &.onInput {
+        //   visibility: visible;
+
+        // }
       }
     }
   }

@@ -59,7 +59,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.commentChildren);
   },
 };
 </script>

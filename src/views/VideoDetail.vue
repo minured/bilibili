@@ -18,7 +18,12 @@
     </div>
 
     <!-- 推荐和评论 -->
-    <Others :commendData="commendData" :userInfo="userInfo" />
+    <Others
+      :commendData="commendData"
+      :userInfo="userInfo"
+      @forward="onClickForward"
+      @reply="onReply"
+    />
 
     <!-- 所有二级评论的弹出层 -->
     <van-popup
@@ -124,6 +129,10 @@ export default {
     CommentItem,
   },
   methods: {
+    onReply(id) {
+      console.log(id);
+      // this.commendModel.parentId = id;
+    },
     onShareSelect(option) {
       this.$toast(option.name);
       this.showShare = false;
@@ -185,9 +194,7 @@ export default {
       if (!this.isLogin()) {
         return;
       }
-      console.log("like");
       const res = await likeVideo(this.$route.params.id);
-      console.log(res.data);
       this.collectionSelected = res.data.isLiked;
     },
     // TODO

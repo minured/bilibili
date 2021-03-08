@@ -25,7 +25,6 @@ export default {
     async userInfoData() {
       const res = await userInfo(localStorage.getItem("id"));
 
-      console.log(res);
       this.model = res.data;
     },
   },
