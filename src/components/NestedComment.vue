@@ -3,32 +3,33 @@
     <div class="comment-item" v-for="(item, i) in commentChildren" :key="i">
       <div class="current-level" @click="sendCommentID(item._id)">
         <div class="comment">
-          <!-- 评论用户名-->
-          <div class="comment-info">
-            <span class="user-name">{{
-              item.userInfo.nickname || "无名氏"
-            }}</span>
-            <span
-              style="font-size:3.46667vw;color: #212121"
-              v-if="isLevel3"
-              v-html="'&nbsp;'"
-            ></span>
+          <div v-if="isLevel3" class="level2-wrapper">
+            <div class="comment-head">
+              <!-- 用户名 -->
+              <span class="user-name">{{ item.userInfo.nickname }}</span>
+
+              <span v-html="'&nbsp;'"></span>
+              <span class="reply">回复</span>
+              <span v-html="'&nbsp;'"></span>
+              <span style="color: #5090cc" class="user-name">{{
+                item.parentUser
+              }}</span>
+              <span style="font-size:3.46667vw" class="dots">：</span>
+              <br />
+            </div>
+
+            <div class="level3-content comment-content">{{ item.content }}</div>
           </div>
 
-          <!-- 评论内容：两种情况，如果是三级评论，则加上 回复 XX： -->
-          <!-- 情况一：三级评论 -->
+          <div v-else class="level2-wrapper">
+            <div class="comment-head">
+              <span class="user-name">{{ item.userInfo.nickname }}</span>
+              <!-- <span v-html="'&nbsp;'"></span> -->
+              <span class="dots">：</span>
+            </div>
 
-          <div class="comment-content" v-if="isLevel3">
-            回复
-            <span style="color: #5090cc">{{ item.parentUser }}</span>
-            <span style="font-size:3.46667vw"></span>
-            <div>{{ item.content }}</div>
+            <div class="level2-content comment-content">{{ item.content }}</div>
           </div>
-
-          <!-- 情况二： 二级评论 -->
-          <div class="comment-content" v-else>：{{ item.content }}</div>
-
-          <!-- {{ JSON.stringify(item.children) }} -->
         </div>
       </div>
 
@@ -71,27 +72,40 @@ export default {
 .current-level {
   // border: 1px solid red;
   display: flex;
-  padding: 2vw 0;
+  padding: 1vw 0;
   width: 100%;
 
   // 嵌套评论
   .comment {
     flex: 1;
+    font-size: 3.46667vw;
     // border: 1px solid red;
     display: flex;
     align-items: center;
 
-    .comment-info {
+    .comment-head {
       // border: 1px solid red;
+      margin-bottom: 12px;
       .user-name {
-        font-size: 3.46667vw;
         color: #5090cc;
+      }
+      .reply {
+        color: #212121;
+      }
+
+      .dots {
+        padding-bottom: 5px;
       }
     }
 
+    .level2-wrapper,
+    .level3-wrapper {
+      width: 100%;
+    }
     .comment-content {
-      // border: 1px solid red;
-      font-size: 3.46667vw;
+      border-bottom: 0.5px solid #ddd;
+      padding-left: 4vw;
+      padding-bottom: 3vw;
       color: #212121;
       white-space: pre-line;
       word-break: break-word;
