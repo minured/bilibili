@@ -1,31 +1,47 @@
 <template>
-  <div class="page" v-if="collections">
-    <van-nav-bar title="我的收藏" left-arrow @click-left="onClickLeft" fixed />
-    <div class="head">
-      <div class="left-image">
-        <img :src="collections[0].cover" alt="cover" />
+  <div>
+    <div class="page">
+      <van-nav-bar
+        title="我的收藏"
+        left-arrow
+        @click-left="onClickLeft"
+        fixed
+      />
+      <!-- 有收藏 -->
+      <div v-if="collections">
+        <div class="head">
+          <div class="left-image">
+            <img :src="collections[0].cover" alt="cover" />
+          </div>
+
+          <div class="right-info">
+            <div class="title">默认收藏夹</div>
+            <div class="author" v-if="nickname">创建者： {{ nickname }}</div>
+          </div>
+        </div>
+        <div class="count">{{ collections.length }}个内容</div>
+
+        <div class="content" v-for="item in collections" :key="item.videoId">
+          <CollectionItem :video="item" @menuClick="onMenuClick" />
+        </div>
+      </div>
+      <div v-else class="no-collection">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-kong"></use>
+        </svg>
+        收藏夹空空如也
       </div>
 
-      <div class="right-info">
-        <div class="title">默认收藏夹</div>
-        <div class="author" v-if="nickname">创建者： {{ nickname }}</div>
-      </div>
+      <!-- 取消面板 -->
+      <van-action-sheet
+        v-model="showActionSheet"
+        :actions="actions"
+        @select="onRemoveVideo"
+        close-on-click-action
+        cancel-text="取消"
+        :round="false"
+      />
     </div>
-    <div class="count">{{ collections.length }}个内容</div>
-
-    <div class="content" v-for="item in collections" :key="item.videoId">
-      <CollectionItem :video="item" @menuClick="onMenuClick" />
-    </div>
-
-    <!-- 取消面板 -->
-    <van-action-sheet
-      v-model="showActionSheet"
-      :actions="actions"
-      @select="onRemoveVideo"
-      close-on-click-action
-      cancel-text="取消"
-      :round="false"
-    />
   </div>
 </template>
 <script>
@@ -70,7 +86,10 @@ export default {
       const res = await myCollections();
       console.log(res.data);
       if (res.data.status === 200) {
-        this.collections = res.data.result;
+        if (res.data.result.length > 0) {
+          console.log("存在");
+          this.collections = res.data.result;
+        }
       }
     },
   },
@@ -137,5 +156,22 @@ div.count {
 .content {
   padding: 0 15px;
   margin-top: 10px;
+}
+
+.no-collection {
+
+  margin-top: 100px;
+//   border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #aaa;
+  .icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
 }
 </style>
