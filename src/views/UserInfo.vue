@@ -3,6 +3,9 @@
     <NavBar :userInfo="model" />
     <div class="banner"></div>
     <UserDetail :userInfo="model" />
+    <div class="collection" @click="$router.push('/collections')">
+      我的收藏
+    </div>
   </div>
 </template>
 

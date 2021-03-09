@@ -19,6 +19,7 @@ import {
   Popup,
   Cell,
   ShareSheet,
+  NavBar,
 } from "vant";
 
 Vue.use(Tab)
@@ -35,7 +36,8 @@ Vue.use(Tab)
   .use(CollapseItem)
   .use(Popup)
   .use(Cell)
-  .use(ShareSheet);
+  .use(ShareSheet)
+  .use(NavBar);
 
 Vue.config.productionTip = false;
 

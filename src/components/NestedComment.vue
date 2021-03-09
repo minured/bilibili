@@ -85,7 +85,7 @@ export default {
   .comment {
     flex: 1;
     font-size: 3.46667vw;
-    border: 1px solid red;
+    // border: 1px solid red;
     display: flex;
     align-items: center;
 

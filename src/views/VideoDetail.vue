@@ -236,7 +236,7 @@ export default {
   created() {
     this.getVideoData();
     this.getCommend();
-    if (localStorage.getItem("token") && localStorage.getItem("id")) {
+    if (localStorage.getItem("token") && localStorage.getItem("username")) {
       this.getUserInfo();
       this.initCollection();
     }
