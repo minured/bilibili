@@ -8,6 +8,8 @@
       class="username login-field"
       placeholder="请输入账号"
       rule="^.{6,16}$"
+      type="number"
+      inputType="username"
       @onContentUpdate="(res) => (model.username = res)"
     />
     <LoginText
@@ -15,6 +17,7 @@
       class="password login-field"
       placeholder="请输入密码"
       type="password"
+      inputType="password"
       rule="^.{6,16}$"
       @onContentUpdate="(res) => (model.password = res)"
     />
@@ -37,8 +40,8 @@ export default {
   data() {
     return {
       model: {
-        username: "",
-        password: "",
+        username: undefined,
+        password: undefined,
       },
     };
   },
@@ -57,7 +60,11 @@ export default {
           this.$toast.fail(res.data.message);
         }
       } else {
-        this.$toast.fail("格式错误,请重新输入");
+        if (this.$store.state.inputTips) {
+          this.$toast.fail(this.$store.state.inputTips);
+        } else {
+          this.$toast.fail("输入错误");
+        }
       }
     },
   },

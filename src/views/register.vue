@@ -9,7 +9,8 @@
       class="nickname login-field"
       placeholder="请输入昵称"
       type=""
-      rule="^.{5,16}$"
+      inputType="nickname"
+      rule="^.{2,10}$"
       @onContentUpdate="(res) => (model.nickname = res)"
     />
     <LoginText
@@ -17,6 +18,8 @@
       class="username login-field"
       placeholder="请输入账号"
       rule="^.{6,16}$"
+      inputType ="username"
+      type="number"
       @onContentUpdate="(res) => (model.username = res)"
     />
     <LoginText
@@ -24,6 +27,7 @@
       class="password login-field"
       placeholder="请输入密码"
       type="password"
+      inputType="password"
       rule="^.{6,16}$"
       @onContentUpdate="(res) => (model.password = res)"
     />
@@ -46,9 +50,10 @@ export default {
   data() {
     return {
       model: {
-        nickname: "",
-        username: "",
-        password: "",
+        nickname: undefined,
+        username: undefined,
+        password: undefined,
+        inputTips: undefined,
       },
     };
   },
@@ -68,7 +73,12 @@ export default {
           this.$toast.fail(res.data.message);
         }
       } else {
-        this.$toast.fail("格式错误,请重新输入");
+        console.log(this.$store.state.inputTips);
+        if (this.$store.state.inputTips) {
+          this.$toast.fail(this.$store.state.inputTips);
+        } else {
+          this.$toast.fail("输入错误");
+        }
       }
     },
   },

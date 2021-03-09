@@ -17,6 +17,7 @@ export default new Vuex.Store({
       videoId: undefined,
     },
     notifyNestedReply: 0,
+    inputTips: undefined,
   },
   mutations: {
     increment(state, payload) {
@@ -41,6 +42,9 @@ export default new Vuex.Store({
     setNotifyNestedReply(state) {
       console.log("notifyNestedReply has been updated");
       state.notifyNestedReply += 1;
+    },
+    setInputTips(state, value) {
+      state.inputTips = value;
     },
   },
   getters: {

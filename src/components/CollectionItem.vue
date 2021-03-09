@@ -93,6 +93,7 @@ export default {
     div.title {
       //   text-align: center;
       //   font-weight: bold;
+      // 两行显示省略号
       text-overflow: -o-ellipsis-lastline;
       overflow: hidden;
       text-overflow: ellipsis;

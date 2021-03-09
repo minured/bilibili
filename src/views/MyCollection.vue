@@ -25,6 +25,7 @@
           <CollectionItem :video="item" @menuClick="onMenuClick" />
         </div>
       </div>
+      <!-- 没有收藏 -->
       <div v-else class="no-collection">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-kong"></use>
@@ -102,7 +103,10 @@ export default {
 <style lang="scss" scoped>
 .page {
   font-size: 14px;
-  color: #212121;
+  color: #333;
+}
+::v-deep .van-icon-arrow-left {
+    color: #333;
 }
 
 div.head {
