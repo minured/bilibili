@@ -14,9 +14,9 @@ export default new Vuex.Store({
       content: undefined,
       date: dayjs().format("YYYY-MM-DD"),
       parentId: null,
-      
       videoId: undefined,
     },
+    notifyNestedReply: 0,
   },
   mutations: {
     increment(state, payload) {
@@ -35,11 +35,19 @@ export default new Vuex.Store({
       state.commentModel = model;
       console.log(state.commentModel);
     },
+    updateCommentParentId(state, parentId) {
+      state.commentModel.parentId = parentId;
+    },
+    setNotifyNestedReply(state) {
+      console.log("notifyNestedReply has been updated");
+      state.notifyNestedReply += 1;
+    },
   },
   getters: {
     getCommentModel(state) {
       return state.commentModel;
     },
+    getNotifyNestedReply: (state) => state.notifyNestedReply,
   },
   actions: {},
   modules: {},

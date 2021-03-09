@@ -91,12 +91,16 @@ export default {
     VideoItem,
     CommentList,
   },
-  props: ["commendData", "userInfo"],
+  props: ["commendData", "userInfo", "hasReply"],
   methods: {
+    handleReplyFromVideoDetail() {
+      console.log("handleReplyFromVideoDetail");
+      this.$refs.inputEl.focus();
+    },
     onReply(id) {
       this.$emit("reply", id);
       this.commentModel.parentId = id;
-      this.$refs.inputEl.focus()
+      this.$refs.inputEl.focus();
       // this.onInputFocus()
     },
     commentLength(length) {
@@ -183,7 +187,7 @@ export default {
   },
 
   computed: {
-    // 实现同步vuex的state
+    // 同步vuex的state
     commentModel: {
       get() {
         return this.$store.state.commentModel;
@@ -192,6 +196,10 @@ export default {
         console.log("set");
         this.$store.commit("updateCommentModel", model);
       },
+    },
+
+    notifyNestedReply() {
+      return this.$store.state.notifyNestedReply;
     },
   },
 
@@ -206,6 +214,16 @@ export default {
           this.textareaShow = false;
         }
       },
+    },
+    hasReply() {
+      console.log("reply request from videoDetail");
+      this.handleReplyFromVideoDetail();
+    },
+    // 利用监听vuex的state去触发事件
+    notifyNestedReply() {
+      console.log("handle nestedComment's reply");
+      console.log(this.$store.state.commentModel.parentId);
+      this.$refs.inputEl.focus()
     },
   },
 };
@@ -226,7 +244,7 @@ export default {
   left: 0;
   bottom: 0;
   position: fixed;
-  z-index: 10;
+  z-index: 3000;
   padding: 1.067vw 0;
   display: none;
   &.textareaShow {

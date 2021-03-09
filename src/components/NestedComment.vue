@@ -2,7 +2,8 @@
   <div class="page">
     <div class="comment-item" v-for="(item, i) in commentChildren" :key="i">
       <div class="current-level" @click="sendCommentID(item._id)">
-        <div class="comment">
+        <!-- 此层 传事件 -->
+        <div class="comment" @click="nestedReply(item._id)">
           <div v-if="isLevel3" class="level2-wrapper">
             <div class="comment-head">
               <!-- 用户名 -->
@@ -51,15 +52,21 @@ export default {
   methods: {
     // 递归组件 层层向上发送事件
     // 评论id的传递路径： nestedComment => CommentList => Commend(在此发送)
+    // 事件传递层级：nest
     sendCommentID(id) {
       this.$emit("sendCommentID", id); //被每层的本递归组件 接收
     },
     continueSendID(id) {
       this.sendCommentID(id);
     },
+
+    nestedReply(id) {
+      this.$store.commit("updateCommentParentId", id)
+      this.$store.commit("setNotifyNestedReply");
+
+    },
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 
@@ -78,7 +85,7 @@ export default {
   .comment {
     flex: 1;
     font-size: 3.46667vw;
-    // border: 1px solid red;
+    border: 1px solid red;
     display: flex;
     align-items: center;
 

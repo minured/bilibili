@@ -23,6 +23,7 @@
       :userInfo="userInfo"
       @forward="onClickForward"
       @reply="onReply"
+      :hasReply="notifyOthersToReply"
     />
 
     <!-- 所有二级评论的弹出层 -->
@@ -62,6 +63,7 @@
       <div class="nested-comment-wrapper">
         <NestedComment :commentChildren="getCommentChildren()" />
       </div>
+      <div class="bottom-blank"></div>
     </van-popup>
 
     <!-- 分享面板 -->
@@ -102,7 +104,6 @@ export default {
         { name: "分享海报", icon: "poster" },
         { name: "二维码", icon: "qrcode" },
       ],
-
       // 评论弹出层
       commentZan: false,
       commentCai: false,
@@ -117,6 +118,7 @@ export default {
       commendData: undefined,
       userInfo: null,
       isFollowed: false,
+      notifyOthersToReply: 0,
     };
   },
   components: {
@@ -129,7 +131,9 @@ export default {
     CommentItem,
   },
   methods: {
+    // from others 暂时没用
     onReply(id) {
+      console.log("reply from others");
       console.log(id);
       // this.commendModel.parentId = id;
     },
@@ -147,8 +151,11 @@ export default {
       console.log("click forward");
       this.showShare = true;
     },
-    onClickReply() {
-      console.log("click reply");
+    onClickReply(id) {
+      console.log("reply from popup's main comment");
+      this.$store.commit("updateCommentParentId", id);
+      // notify Others To Reply
+      this.notifyOthersToReply += 1;
     },
     getCurrentComment() {
       const index = this.$store.state.currentCommentIndex;
@@ -285,5 +292,8 @@ export default {
 }
 .nested-comment-wrapper {
   padding: 5px 30px;
+}
+.bottom-blank {
+  height: 8vw;
 }
 </style>

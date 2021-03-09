@@ -16,9 +16,9 @@
       <div class="comment-info">
         <div class="info-left">
           <p class="user-name" v-if="currentComment.userInfo">
-            {{ currentComment.userInfo.nickname || "无名氏" }}
+            {{ currentComment.userInfo.nickname}}
           </p>
-          <p class="date">{{ currentComment.date || "no time" }}</p>
+          <p class="date">{{ currentComment.date}}</p>
         </div>
 
         <div class="info-right"></div>
@@ -58,7 +58,7 @@
         <!-- 气泡 -->
         <div
           class="comment-qipao"
-          @click="$emit('clickReply', currentComment.comment_id)"
+          @click="$emit('clickReply', currentComment._id)"
         >
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-qipao"></use>

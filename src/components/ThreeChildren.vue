@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="commentList">
     <div
       class="comment-item"
       v-for="(item, i) in commentList.slice(0, 3)"
