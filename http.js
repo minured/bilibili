@@ -51,7 +51,8 @@ const likeVideo = (videoId) => http.post("/video/like/" + videoId);
 const videoCommend = () => http.get("/commend");
 const getVideoComment = (videoId) => http.get("/comment/" + videoId);
 const publishComment = (commentModel) => http.post("/comment", commentModel);
-
+const myCollections = () => http.get("/collections");
+const removeCollection = (videoId) => http.post("/removeCollection", { videoId });
 
 export {
   http,
@@ -68,4 +69,6 @@ export {
   videoCommend,
   getVideoComment,
   publishComment,
+  myCollections,
+  removeCollection,
 };

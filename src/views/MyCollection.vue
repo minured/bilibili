@@ -1,38 +1,82 @@
 <template>
-  <div class="page">
-    <van-nav-bar title="我的收藏" left-arrow @click-left="onClickLeft" />
+  <div class="page" v-if="collections">
+    <van-nav-bar title="我的收藏" left-arrow @click-left="onClickLeft" fixed />
     <div class="head">
       <div class="left-image">
-        <img src="@/assets/img/bannerTop.png" alt="cover" />
+        <img :src="collections[0].cover" alt="cover" />
       </div>
 
       <div class="right-info">
         <div class="title">默认收藏夹</div>
-        <div class="author">创建者： 真红骑士</div>
+        <div class="author" v-if="nickname">创建者： {{ nickname }}</div>
       </div>
     </div>
-    <div class="count">52个内容</div>
+    <div class="count">{{ collections.length }}个内容</div>
 
-    <div class="content">
-      <CollectionItem />
+    <div class="content" v-for="item in collections" :key="item.videoId">
+      <CollectionItem :video="item" @menuClick="onMenuClick" />
     </div>
+
+    <!-- 取消面板 -->
+    <van-action-sheet
+      v-model="showActionSheet"
+      :actions="actions"
+      @select="onRemoveVideo"
+      close-on-click-action
+      cancel-text="取消"
+      :round="false"
+    />
   </div>
 </template>
 <script>
 import CollectionItem from "@/components/CollectionItem";
+import { myCollections, userInfo, removeCollection } from "@/../http";
 
 export default {
   name: "myCollection",
   data() {
-    return {};
+    return {
+      showActionSheet: false,
+      nickname: undefined,
+      collections: null,
+      removeVideoId: undefined,
+      actions: [{ name: "取消收藏" }],
+    };
   },
   components: {
     CollectionItem,
   },
   methods: {
+    async onRemoveVideo() {
+      console.log(this.removeVideoId);
+      const res = await removeCollection(this.removeVideoId);
+      console.log(res.data);
+      if (res.data.status === 200) {
+        this.getCollections();
+      }
+    },
+    onMenuClick(videoId) {
+      this.showActionSheet = true;
+      this.removeVideoId = videoId;
+    },
     onClickLeft() {
       this.$router.back();
     },
+    async getUserInfo() {
+      const res = await userInfo(localStorage.getItem("username"));
+      this.nickname = res.data.nickname;
+    },
+    async getCollections() {
+      const res = await myCollections();
+      console.log(res.data);
+      if (res.data.status === 200) {
+        this.collections = res.data.result;
+      }
+    },
+  },
+  created() {
+    this.getUserInfo();
+    this.getCollections();
   },
 };
 </script>
@@ -43,8 +87,9 @@ export default {
 }
 
 div.head {
+  margin-top: 50px;
   padding: 10px 15px;
-  //   background: rgba(0, 0, 0, 0.2);
+  background: white;
   //   border: 1px solid red;
   display: flex;
   justify-content: center;
@@ -83,12 +128,14 @@ div.head {
   }
 }
 div.count {
+  background: white;
   font-size: 12px;
   color: #aaa;
-  padding: 0 15px 5px 15px;
+  padding: 0 15px 10px 15px;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 .content {
   padding: 0 15px;
+  margin-top: 10px;
 }
 </style>

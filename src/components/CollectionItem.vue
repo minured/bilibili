@@ -1,16 +1,20 @@
 <template>
-  <div class="wrapper">
+  <div
+    class="wrapper"
+    v-if="video"
+    @click="$router.push('/videoDetail/' + video.videoId)"
+  >
     <div class="left-image">
-      <img src="@/assets/img/bannerTop.png" alt="cover" />
+      <img :src="video.cover" alt="cover" />
     </div>
     <div class="right-info">
-      <div class="title">默认收藏夹</div>
+      <div class="title">{{ video.name }}</div>
 
       <div class="upper">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-UPzhu2-copy"></use>
         </svg>
-        我就是真红骑士
+        {{ video.upper }}
       </div>
       <div class="play-info">
         <div class="play-info-left">
@@ -27,7 +31,7 @@
             316
           </div>
         </div>
-        <div class="right-menu" @click="onMenuClick">
+        <div class="right-menu" @click.stop="onMenuClick(video.videoId)">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-caidan"></use>
           </svg>
@@ -40,13 +44,13 @@
 import "@/assets/iconfont";
 export default {
   name: "myCollection",
+  props: ["video"],
   data() {
     return {};
   },
 
   methods: {
     onMenuClick(videoId) {
-      console.log("menu");
       this.$emit("menuClick", videoId);
     },
   },
@@ -55,9 +59,11 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/baseStyle.scss";
 .wrapper {
+  padding-bottom: 15px;
   font-size: 14px;
   color: #212121;
-  border: 1px solid red;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  // border: 1px solid red;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,6 +93,13 @@ export default {
     div.title {
       //   text-align: center;
       //   font-weight: bold;
+      text-overflow: -o-ellipsis-lastline;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     div.upper {
