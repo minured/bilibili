@@ -71,10 +71,7 @@
               </div>
 
               <!-- 气泡 -->
-              <div
-                class="comment-qipao"
-                @click="$emit('reply', item._id)"
-              >
+              <div class="comment-qipao" @click="$emit('reply', item._id)">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-qipao"></use>
                 </svg>
@@ -121,6 +118,7 @@ export default {
       zanNum: 2356,
       caiSelected: false,
       forward: false,
+      isFlushComment: false,
     };
   },
   props: ["flushComment"],
@@ -130,8 +128,8 @@ export default {
   },
 
   methods: {
-    onReply(id){
-      this.$emit("reply", id)
+    onReply(id) {
+      this.$emit("reply", id);
     },
     onPopAllChildren(index) {
       this.$store.commit("loadIndex", index);
@@ -147,6 +145,7 @@ export default {
         this.currentList = this.commentList.slice(0, this.currentPage + 10);
         this.loading = false;
         if (this.currentPage >= this.commentList.length) {
+          // 有问题
           this.finished = true;
         }
       }, 1000);
@@ -161,7 +160,17 @@ export default {
     async getCommentData() {
       const res = await getVideoComment(this.$route.params.id);
       this.commentList = this.changeToTree(res.data);
-      this.currentList = this.commentList.slice(0, 10);
+
+      // 评论后刷新：继承上次当前评论展示数
+      let sliceIndex = 10;
+      if (this.isFlushComment) {
+        if (this.commentList.length - this.currentPage > 0) {
+          this.currentPage += 10;
+        }
+        sliceIndex = this.currentPage;
+      }
+      this.currentList = this.commentList.slice(0, sliceIndex);
+
       // 除了方法还可以当作传数据
       this.$emit("commentLength", res.data.length);
       // 把commentList载入store
@@ -192,6 +201,7 @@ export default {
       this.getCommentData();
     },
     flushComment() {
+      this.isFlushComment = true;
       this.getCommentData();
     },
   },

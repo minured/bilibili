@@ -295,13 +295,12 @@ export default {
       }
 
       span.publish-btn {
-        // visibility: hidden;
+        display: none;
         color: $bili-color;
         // TODO 实现切换动画
-        // &.onInput {
-        //   visibility: visible;
-
-        // }
+        &.onInput {
+          display: block;
+        }
       }
     }
   }
