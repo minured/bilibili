@@ -134,12 +134,9 @@ export default {
       this.$emit("reply", id)
     },
     onPopAllChildren(index) {
-      // console.log("all");
       this.$store.commit("loadIndex", index);
-      // console.log(index);
       this.showAllChildren = true;
       this.$store.commit("loadPopStatus", true);
-      // console.log(this.$store.state.showAllChildren);
     },
     // 列表触底加载
     loadMore() {
@@ -163,7 +160,6 @@ export default {
     },
     async getCommentData() {
       const res = await getVideoComment(this.$route.params.id);
-      // console.log(res.data);
       this.commentList = this.changeToTree(res.data);
       this.currentList = this.commentList.slice(0, 10);
       // 除了方法还可以当作传数据

@@ -93,13 +93,19 @@ export default {
   },
   props: ["commendData", "userInfo", "hasReply"],
   methods: {
+    //
     handleReplyFromVideoDetail() {
       console.log("handleReplyFromVideoDetail");
       this.$refs.inputEl.focus();
     },
+    // reply from CommentList，点击一级的气泡
     onReply(id) {
-      this.$emit("reply", id);
+      this.$emit("reply from CommentList", id);
       this.commentModel.parentId = id;
+      console.log(this.$store.state.commentModel.parentId);
+      if (this.isInput) {
+        return;
+      }
       this.$refs.inputEl.focus();
       // this.onInputFocus()
     },
@@ -167,9 +173,15 @@ export default {
         return;
       }
       console.log(this.commentModel);
+      console.log("send");
+      // 内容为空
+      if (!this.commentModel.content) {
+        this.$toast.fail("评论字数2-80位");
+        return;
+      }
       // TODO
-      if (!/^.{2,50}$/.test(this.commentModel.content.trim())) {
-        this.$toast.fail("至少两个字");
+      if (!/^.{2,80}$/.test(this.commentModel.content.trim())) {
+        this.$toast.fail("评论字数2-80位");
         return;
       }
       const res = await publishComment(this.commentModel);
@@ -223,7 +235,12 @@ export default {
     notifyNestedReply() {
       console.log("handle nestedComment's reply");
       console.log(this.$store.state.commentModel.parentId);
-      this.$refs.inputEl.focus()
+      this.$refs.inputEl.focus();
+    },
+    isInput() {
+      if (!this.isInput) {
+        this.commentModel.parentId = null;
+      }
     },
   },
 };
