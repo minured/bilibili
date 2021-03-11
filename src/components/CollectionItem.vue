@@ -59,15 +59,15 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/baseStyle.scss";
 .wrapper {
-  padding-bottom: 15px;
-  font-size: 14px;
+  padding-bottom: 4.167vw;
+  font-size: 3.889vw;
   color: #212121;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
   // border: 1px solid red;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
+  height: 22.222vw;
   div.left-image {
     //   border: 1px solid red;
     flex: 2;
@@ -77,10 +77,10 @@ export default {
       justify-content: center;
       align-items: center;
       width: 100%;
-      border-radius: 4px;
+      border-radius: 1.111vw;
       // border: 1px solid red;
     }
-    padding-right: 10px;
+    padding-right: 2.778vw;
   }
 
   div.right-info {
@@ -105,7 +105,7 @@ export default {
 
     div.upper {
       color: #aaa;
-      font-size: 12px;
+      font-size: 3.333vw;
       //   border: 1px solid red;
       display: flex;
       //   justify-content: center;
@@ -116,7 +116,7 @@ export default {
       //   border: 1px solid red;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 3.333vw;
       color: #aaa;
       .play-info-left {
         display: flex;
@@ -124,7 +124,7 @@ export default {
         .play {
           display: flex;
           align-items: center;
-          margin-right: 25px;
+          margin-right: 6.944vw;
         }
         .danmu {
           display: flex;
@@ -148,6 +148,6 @@ export default {
   // border: 1px solid red;
   width: 4.444vw;
   height: 4.444vw;
-  margin-right: 5px;
+  margin-right: 1.389vw;
 }
 </style>

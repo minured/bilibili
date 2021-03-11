@@ -268,30 +268,30 @@ export default {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: space-between;
-  padding: 5px 10px;
-  line-height: 20px;
+  padding: 1.389vw 2.778vw;
+  line-height: 5.556vw;
   align-items: center;
 
   .title {
-    font-size: 14px;
+    font-size: 3.889vw;
     color: #212121;
   }
   .closeBtn {
     // border: 1px solid red;
-    padding-top: 2px;
+    padding-top: 0.556vw;
   }
 }
 .parent-comment {
-  margin-top: 36px;
-  // border: 1px solid red;
-  padding: 10px 20px;
+  margin-top: 10vw;
+  // border: 0.278vw solid red;
+  padding: 2.778vw 5.556vw;
 }
 .blanking {
   background: #eee;
-  height: 6px;
+  height: 1.667vw;
 }
 .nested-comment-wrapper {
-  padding: 5px 30px;
+  padding: 1.389vw 8.333vw;
 }
 .bottom-blank {
   height: 8vw;

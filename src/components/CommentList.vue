@@ -217,7 +217,7 @@ export default {
 .comment-item {
   // background: rgba($color: #000000, $alpha: 0.1);
   border-bottom: 1px solid #e7e7e7;
-  padding-bottom: 15px;
+  padding-bottom: 4.167vw;
   padding-top: 2.778vw;
 }
 .comment-lv1 {
@@ -227,8 +227,8 @@ export default {
 
   .left {
     img {
-      width: 30px;
-      height: 30px;
+      width: 8.333vw;
+      height: 8.333vw;
       border-radius: 50%;
       vertical-align: middle;
       margin-right: 2.778vw;
@@ -266,8 +266,8 @@ export default {
         .icon {
           width: 3.889vw;
           height: 3.889vw;
-          margin-right: 2px;
-          margin-top: -2px;
+          margin-right: 0.556vw;
+          margin-top: -0.556vw;
         }
         .reply {
           font-size: 3.333vw;
@@ -314,7 +314,7 @@ export default {
   margin: 2.778vw 0 0 11.111vw;
   padding: 0 1.389vw;
   // border: 1px solid red;
-  max-height: 200px;
+  max-height: 55.556vw;
   overflow: auto;
   background: #f4f4f4;
   border-radius: 1.111vw;

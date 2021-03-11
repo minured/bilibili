@@ -104,7 +104,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .page {
-  font-size: 14px;
+  font-size: 3.889vw;
   color: #333;
 }
 ::v-deep .van-icon-arrow-left {
@@ -112,14 +112,14 @@ export default {
 }
 
 div.head {
-  margin-top: 50px;
-  padding: 10px 15px;
+  margin-top: 13.889vw;
+  padding: 2.778vw 4.167vw;
   background: white;
   //   border: 1px solid red;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
+  height: 22.222vw;
   div.left-image {
     flex: 2;
     display: flex;
@@ -128,10 +128,10 @@ div.head {
       justify-content: center;
       align-items: center;
       width: 100%;
-      border-radius: 4px;
+      border-radius: 1.111vw;
       //   border: 1px solid red;
     }
-    padding-right: 10px;
+    padding-right: 2.778vw;
   }
 
   div.right-info {
@@ -148,20 +148,20 @@ div.head {
 
     div.author {
       color: #aaa;
-      font-size: 12px;
+      font-size: 3.333vw;
     }
   }
 }
 div.count {
   background: white;
-  font-size: 12px;
+  font-size: 3.333vw;
   color: #aaa;
-  padding: 0 15px 10px 15px;
+  padding: 0 4.167vw 2.778vw 4.167vw;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 .content {
-  padding: 0 15px;
-  margin-top: 10px;
+  padding: 0 4.167vw;
+  margin-top: 2.778vw;
 }
 
 .no-collection {
@@ -171,12 +171,12 @@ div.count {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 3.889vw;
   color: #aaa;
   .icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
+    width: 13.889vw;
+    height: 13.889vw;
+    margin-bottom: 2.778vw;
   }
 }
 </style>

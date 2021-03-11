@@ -279,7 +279,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 14px;
+      font-size: 3.889vw;
       img {
         width: 8.333vw;
         height: 8.333vw;
@@ -297,7 +297,7 @@ export default {
         padding: 0.278vw 2.3vw;
         background: #f4f4f4;
         box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
-        margin: 0 15px 0 0px;
+        margin: 0 4.167vw 0 0vw;
       }
 
       span.publish-btn {
@@ -316,6 +316,11 @@ export default {
   margin-top: 4.167vw;
   padding: 0 4.167vw 2.778vw 4.167vw;
   // border: 1px solid red;
-  margin-bottom: 29px;
+  margin-bottom: 8.056vw;
+}
+
+// vant-tab
+::v-deep .van-tab__text {
+  font-size: 3.889vw;
 }
 </style>

@@ -28,7 +28,7 @@
 
 <script>
 import NavBar from "@/components/NavBar";
-import UserDetail from "@/components/UserDetail";
+import UserDetail from "@/components/userDetail";
 import { userInfo } from "@/../http";
 import "@/assets/iconfont.js";
 
@@ -64,8 +64,8 @@ export default {
     background-position: 50%;
   }
   .tools {
-    padding: 15px 15px;
-    font-size: 12px;
+    padding: 4.167vw 4.167vw;
+    font-size: 3.333vw;
     // border: 1px solid red;
     margin-top: 8px;
     background: white;
@@ -79,9 +79,9 @@ export default {
       justify-content: center;
       align-items: center;
       .icon {
-        width: 25px;
-        height: 25px;
-        margin-bottom: 2px;
+        width: 6.944vw;
+        height: 6.944vw;
+        margin-bottom: 0.556vw;
       }
       // border: 1px solid red;
     }

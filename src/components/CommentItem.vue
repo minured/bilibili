@@ -82,8 +82,8 @@ export default {
 
   .left {
     img {
-      width: 30px;
-      height: 30px;
+      width: 8.333vw;
+      height: 8.333vw;
       border-radius: 50%;
       vertical-align: middle;
       margin-right: 2.778vw;

@@ -91,7 +91,7 @@ export default {
 
     .comment-head {
       // border: 1px solid red;
-      margin-bottom: 12px;
+      margin-bottom: 3.333vw;
       .user-name {
         color: #5090cc;
       }
@@ -100,7 +100,7 @@ export default {
       }
 
       .dots {
-        padding-bottom: 5px;
+        padding-bottom: 1.389vw;
       }
     }
 

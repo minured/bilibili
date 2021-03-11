@@ -48,21 +48,21 @@ export default {
 // 最后一个热点-对齐
 .last {
     color: red;
-    margin-left: -4px;
-    margin-right: 4px !important;
+    margin-left: -1.111vw;
+    margin-right: 1.111vw !important;
 }
 .page {
-    padding: 0 10px;
+    padding: 0 2.778vw;
 }
 .title {
   margin: 0;
-  font-size: 14px;
-  padding: 5px 5px 0 5px;
+  font-size: 3.889vw;
+  padding: 1.389vw 1.389vw 0 1.389vw;
   font-weight: bolder;
 }
 ul.hotspot-list {
-  font-size: 14px;
-  padding: 5px 5px 5px 8px;
+  font-size: 3.889vw;
+  padding: 1.389vw 1.389vw 1.389vw 2.222vw;
 //   border: 1px solid red;
   display: flex;
   flex-wrap: wrap;
@@ -70,9 +70,9 @@ ul.hotspot-list {
   li.hotspot-item {
     // border: 1px solid red;
     width: 40vw;
-    margin: 5px 0;
+    margin: 1.389vw 0;
     span.num {
-        margin-right: 8px; 
+        margin-right: 2.222vw; 
         font-weight: bold;
         color: #999;
     }

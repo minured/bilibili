@@ -75,11 +75,11 @@ export default {
     width: 60vw;
     justify-content: space-between;
     .icon {
-      width: 20px;
-      //   border: 1px solid red;
-      height: 20px;
+      width: 5.556vw;
+      //   border: 0.278vw solid red;
+      height: 5.556vw;
       vertical-align: middle;
-      margin-top: -5px;
+      margin-top: -1.389vw;
       color: red;
     }
   }
@@ -91,8 +91,8 @@ export default {
 
     color: #fb7299;
     .icon {
-      margin-top: 1px;
-      margin-right: 1px;
+      margin-top: 0.278vw;
+      margin-right: 0.278vw;
     }
     .is-followed {
       color: #999;

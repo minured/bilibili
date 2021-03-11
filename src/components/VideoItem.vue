@@ -53,7 +53,7 @@ export default {
       position: absolute;
       left: 0;
       bottom: 0;
-      height: 30px;
+      height: 8.333vw;
       width: 100%;
       background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent);
     }

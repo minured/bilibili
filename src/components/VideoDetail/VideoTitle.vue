@@ -118,8 +118,8 @@ export default {
     font-size: 3.2vw;
     line-height: 4.8vw;
     color: #999;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 4.167vw;
+    padding-right: 4.167vw;
     padding-top: 1.33333vw;
     white-space: pre-wrap;
   }
