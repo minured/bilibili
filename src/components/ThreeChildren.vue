@@ -22,7 +22,6 @@
     </div>
     <div
       class="more-comment"
-      v-if="commentList.length > 3"
       @click="$emit('popAllChildren')"
     >
       查看全部{{ commentList.length }}条回复 >

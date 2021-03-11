@@ -1,6 +1,6 @@
 <template>
   <div class="video-player">
-    <video :src="videoData.content" controls></video>
+    <video :src="videoData.content" controls custom-cache="false" preload ="auto"></video>
   </div>
 </template>
 

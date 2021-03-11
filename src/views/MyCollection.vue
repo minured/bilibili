@@ -88,8 +88,10 @@ export default {
       console.log(res.data);
       if (res.data.status === 200) {
         if (res.data.result.length > 0) {
-          console.log("存在");
           this.collections = res.data.result;
+        } else {
+          // 删除最后一个重置
+          this.collections = null;
         }
       }
     },
@@ -106,7 +108,7 @@ export default {
   color: #333;
 }
 ::v-deep .van-icon-arrow-left {
-    color: #333;
+  color: #333;
 }
 
 div.head {
@@ -163,9 +165,8 @@ div.count {
 }
 
 .no-collection {
-
   margin-top: 100px;
-//   border: 1px solid red;
+  //   border: 1px solid red;
   display: flex;
   flex-direction: column;
   justify-content: center;

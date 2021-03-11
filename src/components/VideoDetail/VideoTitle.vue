@@ -35,13 +35,16 @@ export default {
   data() {
     return {
       activeNames: [],
+
       titleWrap: true,
     };
   },
   props: ["videoData"],
   methods: {
     onChange() {
+      console.log("change");
       this.$emit("onChange");
+      this.titleWrap = !this.titleWrap
     },
   },
 };

@@ -96,6 +96,9 @@ export default {
     //
     handleReplyFromVideoDetail() {
       console.log("handleReplyFromVideoDetail");
+      if (this.isInput) {
+        return;
+      }
       this.$refs.inputEl.focus();
     },
     // reply from CommentList，点击一级的气泡
@@ -235,6 +238,9 @@ export default {
     notifyNestedReply() {
       console.log("handle nestedComment's reply");
       console.log(this.$store.state.commentModel.parentId);
+      if (this.isInput) {
+        return;
+      }
       this.$refs.inputEl.focus();
     },
     isInput() {
