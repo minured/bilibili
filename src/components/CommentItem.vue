@@ -24,7 +24,7 @@
         <div class="info-right"></div>
       </div>
       <div class="comment-content">
-        {{ currentComment.comment_content }}
+        {{ currentComment.content }}
       </div>
       <div class="comment-operation">
         <!-- 点赞 -->
