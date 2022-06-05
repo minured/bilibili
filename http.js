@@ -1,8 +1,10 @@
 import axios from "axios";
 import router from "./src/router";
 import Vue from "vue";
+import { apiPrefix } from "./private"
+
 const http = axios.create({
-  baseURL: "http://159.75.122.22:3001/api",
+  baseURL: apiPrefix,
 });
 
 //在then或者catch之前 进行拦截
